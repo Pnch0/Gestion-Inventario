@@ -181,11 +181,7 @@ export const DeleteUser = async(req, res) =>{
             console.error("Error al eliminar en la Base de Datos: ", dbError.message);
             return res.status(400).json({ error: "No se pudo eliminar el registro del usuario", detalle: dbError.message });
         }
-    }
 
-    
-
-    try{
         const { error: authError } = await supabaseAdmin.auth.admin.deleteUser(id);
 
         if (authError){
@@ -201,4 +197,4 @@ export const DeleteUser = async(req, res) =>{
     } catch (error){
         res.status(500).json({ error: error.message });
     }
-};
+}
