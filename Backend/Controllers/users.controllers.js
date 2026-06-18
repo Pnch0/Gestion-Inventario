@@ -90,7 +90,8 @@ export const GetUser = async(req, res) => {
             apellido,
             correo,
             telefono,
-            rol_id ( nombre )
+            rol_id,
+            Rol:rol_id ( nombre )
             `);
 
         if(error){
@@ -100,7 +101,7 @@ export const GetUser = async(req, res) => {
 
         const usuariosFormateados = data.map(user => ({
             ...user,
-            nombre_rol: user.rol_id?.nombre || 'Sin Rol'
+            nombre_rol: user.Rol?.nombre || user.Rol?.[0]?.nombre || 'Sin Rol'
         }));
 
         console.log("Usuarios obtenidos con exito");
