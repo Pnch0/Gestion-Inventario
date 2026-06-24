@@ -10,7 +10,7 @@ app.use(cors());
 app.use(express.json());
 
 app.use('/api/users', routeUsers);
-app.use('/api/products'. routeProducts);
+app.use('/api/products', routeProducts);
 
 const PORT = 3000;
 app.listen(PORT, () => console.log(`Servidor en puerto ${PORT}`));

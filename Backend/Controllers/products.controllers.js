@@ -15,22 +15,19 @@ export const CreateProduct = async (req, res) => {
         if (file) {
             const fileExtension = file.originalname.split('.').pop();
             const fileName = `${Date.now()}-${Math.round(Math.random() * 1E9)}.${fileExtension}`;
-            imagePathInStorage = fileName; // Guardamos la referencia para el catch
+            imagePathInStorage = fileName;
 
             const { data: storageData, error: storageError } = await supabase.storage
                 .from('productos')
-                .upload(fileName, file.buffer, {
-                    contentType: file.mimetype,
-                    upsert: false
-                });
+                .upload(fileName, file.buffer, { contentType: file.mimetype, upsert: false });
 
             if (storageError) throw storageError;
 
-            const { data: urlData } = supabase.storage
-                .from('productos')
-                .getPublicUrl(fileName);
-
+            const { data: urlData } = supabase.storage.from('productos').getPublicUrl(fileName);
             imagen_url = urlData.publicUrl;
+        } else if (req.body.imagen) {
+            // Si Thunder Client manda un texto en el campo 'imagen', lo usamos directo
+            imagen_url = req.body.imagen;
         }
 
         const { data, error: dbError } = await supabase
