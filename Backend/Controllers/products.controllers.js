@@ -152,7 +152,7 @@ export const UpdateProduct = async (req, res) =>{
         };
 
         const { data, error: dbError } = await supabase
-            .from('Producto')
+            .from('Productos')
             .update(UpdateData)
             .eq('producto_id', id)
             .select();
