@@ -26,6 +26,7 @@ export const CreateProduct = async (req, res) => {
             const { data: urlData } = supabase.storage.from('productos').getPublicUrl(fileName);
             imagen_url = urlData.publicUrl;
         } else if (req.body.imagen) {
+            // Si Thunder Client manda un texto en el campo 'imagen', lo usamos directo
             imagen_url = req.body.imagen;
         }
 
@@ -83,9 +84,6 @@ export const GetProduct = async (req, res) => {
             console.error("Error de Supabase: ", error.message);
             return res.status(400).json({ error: error.message })
         }
-
-        return res.json(data);
-
     } catch (error){
         console.error("Error critico en el servidor al obtener los productos", error);
 
