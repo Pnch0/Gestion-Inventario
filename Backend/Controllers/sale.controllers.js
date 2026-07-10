@@ -75,34 +75,47 @@ export const CreateSale = async (req, res) => {
 };
 
 
-export const GetSale = async(req, res) =>{
-    try{
-        const ventas = await supabase.from('Ventas')
-        .select(`
-            id_venta,
-            fecha_hora,
-            total_general,
-            Usuarios (rut, nombre)
-        `)
-        .order('fecha_hora', { ascending: false });
+export const GetSale = async (req, res) => {
+  try {
+      const { data: ventas, error } = await supabase
+          .from('Ventas')
+          .select(`
+              id_venta,
+              fecha_hora,
+              total_general,
+              rut,
+              Detalle_Venta (
+                  id_detalle,
+                  producto_id,
+                  cantidad_venta,
+                  precio_unitario,
+                  total_linea
+              )
+          `)
+          .order('fecha_hora', { ascending: false });
 
-        res.json(ventas);
-    
-    } catch (error){
-        res.status(500).json({ error: "Error al obtener las ventas" });
-    }
+      if (error) {
+          throw new Error(error.message);
+      }
+
+      res.json(ventas);
+
+  } catch (error) {
+      res.status(500).json({ error: "Error al obtener las ventas", detalle: error.message });
+  }
 };
 
 export const GetSaleDetail = async(req , res) =>{
     const { id } = req.params;
     try{
-        const detalles = await supabase.from('Detalle_Venta')
+        const { data: detalles, error } = await supabase
+        .from('Detalle_Venta')
         .select(`
             id_detalle,
             cantidad_venta,
             precio_unitario,
             total_linea,
-            Productos (id, nombre)
+            Productos ( producto_id, nombre )
             `)
             .eq('id_venta', id);
 
