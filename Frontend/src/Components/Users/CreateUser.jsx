@@ -160,3 +160,5 @@ return(
     </>
 );
 }
+
+export default CreateUser;

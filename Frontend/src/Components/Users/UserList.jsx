@@ -1,5 +1,6 @@
 import React from "react";
 import { useState, useEffect } from "react";
+import { userService } from './Services/api.js';
 
 export default function UserList() {
     const [users, setUsers] = useState([]);
@@ -92,3 +93,5 @@ export default function UserList() {
         </>
     )
 }
+
+export default UserList;
