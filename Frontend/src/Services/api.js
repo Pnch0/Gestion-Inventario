@@ -87,4 +87,85 @@ export const userService = {
             throw error;
         }
     }
-}
+};
+
+
+export const productService = {
+
+    getProducts: async () => {
+        try{
+            const response = await fetch(`${API_URL}/products`);
+
+            if (!response.ok){
+                const errorData = await response.json();
+                throw new Error(errorData.error || 'Error al obtener los productos');
+            }
+
+            return await response.json();
+        
+        } catch (error){
+            console.error("Error en el servicio getProducts: ", error.message);
+            throw error;
+        }
+    },
+
+    createProducts: async (productFormData) =>{
+        try{
+            const response = await fetch(`${API_URL}/products`,{
+                method: 'POST',
+                body: productFormData
+            });
+        
+            if (!response.ok){
+                const errorData = await response.json();
+                throw new Error(errorData.error || 'Error al registrar el producto');
+            }
+
+            return await response.json();
+
+        } catch(error){
+            console.error("Error en el servicio createProduct: ", error.message);
+            throw error;
+        }
+    },
+
+    updateProduct: async(id, productFormData) =>{
+        try{
+            const response = await fetch(`${API_URL}/product/${id}`,{
+                method: 'PUT',
+                body: productFormData
+            });
+
+            if (!response.ok){
+                const errorData = await response.json();
+                throw newError(errorData.error || 'Error al actualizar el producto');
+            }
+
+            return await response.json();
+        
+        } catch(error){
+            console.error("Error en el servicio updateProduct", error.message);
+            throw error;
+        }
+    },
+
+    deleteProduct: async(id) =>{
+        try{
+            const response = await fetch(`${API_URL}/product/${id}`,{
+                method: 'DELETE'
+            });
+
+
+            if (!response.ok){
+                const errorData = await response.json();
+                throw new Error(errorData.error || 'Error al intentar eliminar el producto');
+            }
+
+            return await response.json();
+        
+        } catch(error){
+            console.error("Error en el servicio deleteProduct", error.message);
+            throw error;
+        } 
+    }
+};
