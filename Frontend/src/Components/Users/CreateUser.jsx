@@ -1,8 +1,9 @@
 import React from "react";
 import { useState, useEffect } from "react";
+import { userService } from "../../Services/api.js";
 
 
-export default function CreateUser({onUserCreated}){
+function CreateUser({onUserCreated}){
     const [formData, setFormData] = useState({
         rut: '',
         rol_id: '',

@@ -1,21 +1,17 @@
 import React from "react";
 import { useState, useEffect } from "react";
-import { userService } from './Services/api.js';
+import { userService } from "../../Services/api.js";
 
-export default function UserList() {
+function UserList() {
     const [users, setUsers] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState('');
+    const [editTarget, setEditTarget] = useState(null);
 
     const fetchUsers = async () =>{
         try{
             setLoading(true);
-            const response = await fetch('api/users');
-            if (!response.ok){
-                throw new Error('Error al obtener la lista de usuarios');
-            }
-
-            const data = await response.json();
+            const data = await userService.getUsers();
             setUsers(data);
         
         } catch (error){
@@ -35,24 +31,15 @@ export default function UserList() {
             return;
         }
         
-        try{
-            const response = await fetch(`/api/users/${idAuth}`,{
-                method: 'DELETE'
-            });
-
-            const data = await response.json();
-
-            if(!response.ok){
-                throw new Error(data.error || 'No se pudo eliminar el usuario');
-            }
+        try {
+            const data = await userService.deleteUser(idAuth);
         
-            alert(data.message);
+            alert(data.message || 'Usuario eliminado con éxito');
 
             setUsers(users.filter(user => user.id_auth !== idAuth));
-
-        } catch (error){
-            alert(`Error: ${error.message}`)
-        }   
+        } catch (error) {
+            alert(`Error: ${error.message}`);
+        }
     };
     
     if (loading) return <div>Cargando usuarios...</div>;
@@ -64,7 +51,7 @@ export default function UserList() {
         <div className="UserList-Contenedor">
             <h2>Lista de Usuarios</h2>
             {users.length === 0 ? (
-                <p>No hya usuarios registrados</p>
+                <p>No hay usuarios registrados</p>
             ) : (
                 <ul className="ListaDatos-Usuarios">
                     {users.map((user) => (
