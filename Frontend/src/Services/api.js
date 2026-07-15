@@ -169,3 +169,29 @@ export const productService = {
         } 
     }
 };
+
+export const saleService ={
+    getSales: async () =>{
+        try{
+            const response = await fetch(`${API_URL}/sales`);
+
+            if (!response.ok){
+                const errorData = await response.json();
+                throw new Error(errorData.error || 'Error al obtener las ventas');
+            }
+
+            return await response.json();
+
+        } catch (error){
+            console.error("Error en el servicio getSales: ", error.message);
+            throw error;
+        }
+    },
+
+
+
+}
+
+
+
+
