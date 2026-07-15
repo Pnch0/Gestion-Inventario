@@ -189,7 +189,29 @@ export const saleService ={
     },
 
 
+    createSales: async (salesData) =>{
+        try{
+            const response = await fetch(`${API_URL}/sales`,{
+                method: 'POST',
+                headers: {
+                    'Content-Type' : 'application/json'
+                },
+                body: JSON.stringify(salesData)
+            });
 
+
+            if (!response.ok){
+                const errorData = await response.json();
+                throw new Error(errorData.error || 'Error al registrar la venta');
+            }
+
+            return await response.json();
+        
+        } catch (error){
+            console.error("Error en el servicio createSales: ", error.message);
+            throw error;
+        }
+    },
 }
 
 
