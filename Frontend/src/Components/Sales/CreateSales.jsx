@@ -199,7 +199,7 @@ function CreateSales(){
 
     return(
         <>
-        <div className="Sale-Contenedor">
+        <div className="CreateSales-Contenedor">
             <h2>Registrar Nueva Venta</h2>
 
             {error && <div className="error-message" style={{color: 'red', marginBottom: '10px'}}>{error}</div>}

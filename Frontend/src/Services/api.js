@@ -212,7 +212,30 @@ export const saleService ={
             throw error;
         }
     },
+};
+
+export const roleService = {
+    getRole: async () =>{
+        try{
+            const response = await fetch(`${API_URL}/roles`);
+
+            if (!response.ok){
+                const errorData = await response.json();
+                throw new Error(errorData.error || 'Error al obtener los roles del servidor.'); 
+            }
+
+            return await response.json();
+        
+        } catch(error){
+            console.error("Error en el servicio getRole: ", error.message);
+            throw error;
+        }
+    },
+
+    
 }
+
+
 
 
 
