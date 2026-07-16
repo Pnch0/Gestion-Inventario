@@ -232,8 +232,31 @@ export const roleService = {
         }
     },
 
-    
-}
+    createRole: async (userRole) =>{
+        try{
+            const response = await fetch(`${API_URL}/roles`,{
+                method: 'POST',
+                headers: {
+                    'Content-Type' : 'appication/json'
+                },
+                body: JSON.stringify(userRole)
+            });
+
+            if (!response.ok){
+                const errorData = await response.json();
+                throw new Error(errorData.error || 'Error al registrar el usuario.');
+            }
+
+            return await response.json();
+        
+        } catch (error){
+            console.error("Error en el servicio createRole: ", error.message);
+            throw error;
+        }
+    }
+
+
+};
 
 
 
