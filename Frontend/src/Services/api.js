@@ -232,14 +232,14 @@ export const roleService = {
         }
     },
 
-    createRole: async (userRole) =>{
+    createRole: async (roleData) =>{
         try{
             const response = await fetch(`${API_URL}/roles`,{
                 method: 'POST',
                 headers: {
                     'Content-Type' : 'appication/json'
                 },
-                body: JSON.stringify(userRole)
+                body: JSON.stringify(roleData)
             });
 
             if (!response.ok){
