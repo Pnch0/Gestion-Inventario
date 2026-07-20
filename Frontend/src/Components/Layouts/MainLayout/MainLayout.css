@@ -1,0 +1,21 @@
+.layout-contenedor {
+  display: flex;
+  min-height: 100vh;
+}
+
+.layout-contenido {
+  flex: 1;
+  padding: 20px;
+  background-color: #f5fcec;
+  box-sizing: border-box;
+  margin-left: 85px; 
+  margin-bottom: 0;
+}
+
+
+@media (max-width: 768px) {
+  .layout-contenido {
+    margin-left: 0;
+    margin-bottom: calc(75px + env(safe-area-inset-bottom)); 
+  }
+}
