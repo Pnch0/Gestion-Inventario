@@ -198,4 +198,81 @@ export const DeleteUser = async(req, res) =>{
     } catch (error){
         res.status(500).json({ error: error.message });
     }
-}
+};
+
+export const LoginUser = async(req, res) =>{
+    const { email, password } = req.body;
+
+    if (!email || !password){
+        return res.status(400).json({ error: "El correo y la contraseña son obligatorios."});
+    }
+
+    try{
+        const { data: authData, error: authError } = await supabase.auth.signInWithPassword({
+            email,
+            password,
+        });
+
+        if (authError){
+            return res.status(401).json({ error: "Credenciales invalidas.", detalle: authError.message });
+        }
+
+        const userId = authData.user?.id;
+
+        const { data: usuarioTabla, error: dbError } = await supabase
+            .from('Usuario')
+            .select(`
+                id_auth,
+                rut,
+                nombre,
+                apellido,
+                correo,
+                telefono,
+                rol_id,
+                Rol:rol_id ( nombre )
+            `)
+            .eq('id_auth', userId)
+            .single();
+
+        if (dbError){
+            console.error("Error al consultar la tabla Usuario: ", dbError.message);
+        }
+
+        const perfilCompleto = usuarioTabla ? {
+            ...usuarioTabla,
+            nombre_rol: usuarioTabla.Rol?.nombre || usuarioTabla.Rol?.[0]?.nombre || 'Sin Rol'
+        } : null;
+
+        return res.json({
+            message: "Inicio de sesión exitoso",
+            token: authData.session.access_token,
+            refresh_token: authData.session.refresh_token,
+            user: {
+                id: authData.user.id,
+                email: authData.user.email,
+                perfil: perfilCompleto
+            }
+        });
+
+    } catch (error){
+        console.error("Error en LoginUser: ", error);
+        return res.status(500).json({ error: "Error interno del servidor al intentar iniciar sesion. "})
+    }
+};
+
+
+export const LogoutUser = async (req, res) =>{
+    try{
+        const { error } = await supabase.auth.signOut();
+
+        if (error){
+            return res.status(400).json({ error: "Errro al cerrar sessión", detalle: error.message });
+        }
+
+        return res.json({ message: "Sesión cerrada correctamente" })
+    
+    } catch (error){
+        console.error("Error en LogoutUser:", error);
+        return res.status(500).json({ error: "Error interno del servidor." });
+    }
+};
