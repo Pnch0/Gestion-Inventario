@@ -1,0 +1,162 @@
+body {
+    font-family: sans-serif;
+    box-sizing: border-box;
+    margin: 0;
+    min-height: 100vh;
+    background-color: #f5fcec;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#root {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.Contenedor-Login {
+    width: 55%;
+    height: 65vh;
+    background-color: white;
+    display: flex;
+    flex-direction: row;
+    position: relative;
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+}
+
+.ContenedorLogin-Izquierda {
+    width: 50%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding-top: 40px;
+}
+
+.ContenedorLogin-Texto{
+    width: 100%;
+    height: 28%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.ContenedorLogin-Texto h1{
+    color: #3da35d;
+    font-weight: bold;
+    font-size: 36px;
+}
+
+.ContenedorLogin-Formulario{
+    width: 100%;
+    height:72%;
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    align-items: center;
+}
+
+.ContenedorLogin-Formulario form {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+}
+
+.ContenedorLogin-Formulario form label{
+    width: 80%;
+    text-align: left;
+    color: #3da35d;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.ContenedorLogin-Formulario form input{
+    width: 80%;
+    height: 40px;
+    border-radius: 5px;
+    border: none;
+    outline: 1px solid #3da35d;
+    padding: 0px 10px;
+    color: #3da35d;
+    box-sizing: border-box;
+}
+
+
+
+.Contenedor-Input-Password {
+    width: 80%;
+    height: 42px;
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.Contenedor-Input-Password input {
+    width: 100% !important;
+    height: 100%;
+    border-radius: 5px;
+    border: none;
+    outline: 1px solid #3da35d;
+    padding: 0 40px 0 12px;
+    color: #3da35d;
+    font-size: 14px;
+    box-sizing: border-box;
+}
+
+.Boton-Ver-Password {
+    position: absolute;
+    right: 12px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    color: #3da35d;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    z-index: 2;
+}
+
+.ContenedorLogin-Formulario form .Boton-Submit {
+    width: 50%;
+    height: 48px;
+    margin-top: 15px;
+    border-radius: 12px;
+    background-color: #3da35d;
+    color: #FFF;
+    outline: none;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: bold;
+    transition: background-color 0.2s ease;
+}
+
+
+.ContenedorLogin-Derecha {
+    width: 50%;
+    height: 100%;
+    position: relative;
+    overflow: hidden;
+}
+
+
+.ContenedorLogin-Derecha::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: -20%;
+    width: 90%;
+    background-color: #3da35d;
+    transform: skewX(-18deg);
+    transform-origin: bottom right;
+    border-radius: 20px;
+}
