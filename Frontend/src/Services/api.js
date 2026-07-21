@@ -265,9 +265,9 @@ export const LoginService = {
             body: JSON.stringify(credentials)
         });
 
-        if (!response.ok){
+        if (!response.ok) {
             const errorData = await response.json();
-            throw new Error(errorData.message || 'Error al iniciar sesión');
+            throw new Error(errorData.error || errorData.message || errorData.detalle || 'Error al iniciar sesión');
         }
 
         return await response.json()

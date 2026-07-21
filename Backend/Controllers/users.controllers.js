@@ -213,8 +213,12 @@ export const LoginUser = async(req, res) =>{
             password,
         });
 
-        if (authError){
-            return res.status(401).json({ error: "Credenciales invalidas.", detalle: authError.message });
+        if (authError) {
+            console.error("Detalle error Supabase Auth:", authError.message, authError.status);
+            return res.status(401).json({ 
+                error: "Credenciales inválidas.", 
+                detalle: authError.message 
+            });
         }
 
         const userId = authData.user?.id;

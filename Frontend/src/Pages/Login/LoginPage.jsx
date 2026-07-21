@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useNavigate } from 'react-router-dom';
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import './LoginPage.css';
+import { LoginService } from "../../Services/api.js";
 
 
 function LoginPage(){
