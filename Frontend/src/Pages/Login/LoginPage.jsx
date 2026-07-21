@@ -33,7 +33,20 @@ function LoginPage(){
                 localStorage.setItem('usuario', JSON.stringify(data.user));
             }
 
-            toast.success(`¡Bienvenido de vuelta, ${data.user?.email || 'usuario'}!`);
+            toast.success(`¡Bienvenido de vuelta, ${data.user?.email || 'usuario'}!`, {
+            duration: 4000,
+            position: 'top-center',
+            style: {
+                border: '1px solid #BBF7D0',
+                padding: '16px',
+                color: '#166534',
+                background: '#EDFCF2',
+            },
+            iconTheme: {
+                primary: '#15803D',
+                secondary: '#EDFCF2',
+            },
+            });
 
             setTimeout(() => {
                 navigate('/main-page');
@@ -42,7 +55,20 @@ function LoginPage(){
         } catch (error){
             console.error("Error al iniciar sesión: ", error);
 
-            toast.error(error.message || 'Las credenciales ingresadas son incorrectas.');
+            toast.error(error.message || 'Las credenciales ingresadas son incorrectas.', {
+            duration: 4000,
+            position: 'top-center',
+            style: {
+                border: '1px solid #FECACA',
+                padding: '16px',
+                color: '#991B1B',
+                background: '#FEF2F2',
+            },
+            iconTheme: {
+                primary: '#DC2626',
+                secondary: '#FEF2F2',
+            },
+        });
         
         } finally{
             setCargando(false);
