@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import './LoginPage.css';
 import { LoginService } from "../../Services/api.js";
+import { toast } from 'react-hot-toast';
 
 
 function LoginPage(){
@@ -10,14 +11,12 @@ function LoginPage(){
     const [password, setPassword] = useState('');
     const [verPassword, setVerPassword] = useState(false);
     const [cargando, setCargando] = useState(false);
-    const [alerta, setAlerta] = useState(null);
 
     const navigate = useNavigate();
 
     const handleSubmit = async (e) =>{
         e.preventDefault();
         setCargando(true);
-        setAlerta(null);
 
         console.log("Enviando datos: ", { email, password });
 
@@ -34,11 +33,7 @@ function LoginPage(){
                 localStorage.setItem('usuario', JSON.stringify(data.user));
             }
 
-            setAlerta({
-                titulo: '¡Inicio de Sesión Exitoso!',
-                texto: `¡Bienvenido de vuelta, ${data.user?.email || 'usuario'}! Redirigiendo a la página principal...`,
-                tipo: 'exito'
-            });
+            toast.success(`¡Bienvenido de vuelta, ${data.user?.email || 'usuario'}!`);
 
             setTimeout(() => {
                 navigate('/main-page');
@@ -47,11 +42,7 @@ function LoginPage(){
         } catch (error){
             console.error("Error al iniciar sesión: ", error);
 
-            setAlerta({
-                titulo: 'Error de Autenticación',
-                texto: error.message || 'Las credenciales ingresadas son incorrectas.',
-                tipo: 'error'
-            });
+            toast.error(error.message || 'Las credenciales ingresadas son incorrectas.');
         
         } finally{
             setCargando(false);
