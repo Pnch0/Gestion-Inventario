@@ -160,3 +160,157 @@ body {
     transform-origin: bottom right;
     border-radius: 20px;
 }
+
+
+/* MEDIA QUERIES */
+
+@media (max-width: 1024px) and (min-width: 601px) {
+  .Contenedor-Login {
+    width: 70%;
+    max-width: 520px !important;
+    height: auto !important;
+    padding: 40px 30px !important;
+    border-radius: 16px;
+  }
+
+  .ContenedorLogin-Derecha {
+    display: none !important;
+  }
+
+  .ContenedorLogin-Izquierda {
+    width: 100% !important;
+    height: auto !important;
+    padding-top: 0 !important;
+  }
+
+  .ContenedorLogin-Texto {
+    height: auto !important;
+    margin-bottom: 20px;
+  }
+
+  .ContenedorLogin-Texto h1 {
+    font-size: 32px;
+  }
+
+  .ContenedorLogin-Formulario {
+    height: auto !important;
+  }
+
+  .ContenedorLogin-Formulario form {
+    gap: 16px;
+  }
+
+  .ContenedorLogin-Formulario form label,
+  .ContenedorLogin-Formulario form input,
+  .Contenedor-Input-Password {
+    width: 85%;
+  }
+
+  .ContenedorLogin-Formulario form .Boton-Submit {
+    width: 60%;
+    height: 45px;
+    margin-top: 15px;
+    font-size: 17px;
+  }
+}
+
+
+@media (max-width: 600px) {
+  .Contenedor-Login {
+    width: 90%;
+    max-width: 360px !important;
+    height: auto !important;
+    padding: 25px 15px !important;
+    border-radius: 12px;
+  }
+
+  .ContenedorLogin-Derecha {
+    display: none !important;
+  }
+
+  .ContenedorLogin-Izquierda {
+    width: 100% !important;
+    height: auto !important;
+    padding-top: 0 !important;
+  }
+
+  .ContenedorLogin-Texto {
+    height: auto !important;
+    margin-bottom: 15px;
+  }
+
+  .ContenedorLogin-Texto h1 {
+    font-size: 26px;
+  }
+
+  .ContenedorLogin-Formulario {
+    height: auto !important;
+  }
+
+  .ContenedorLogin-Formulario form {
+    gap: 12px;
+  }
+
+  .ContenedorLogin-Formulario form label,
+  .ContenedorLogin-Formulario form input,
+  .Contenedor-Input-Password {
+    width: 90%;
+  }
+
+  .ContenedorLogin-Formulario form .Boton-Submit {
+    width: 75%;
+    height: 42px;
+    margin-top: 10px;
+  }
+}
+
+@media (max-width: 900px) {
+
+  .Contenedor-Login {
+    width: 90%;
+    max-width: 360px !important;
+    height: auto !important;
+    padding: 25px 15px !important;
+    border-radius: 12px;
+  }
+
+  .ContenedorLogin-Derecha {
+    display: none !important;
+  }
+
+
+  .ContenedorLogin-Izquierda {
+    width: 100% !important;
+    height: auto !important;
+    padding-top: 0 !important;
+  }
+
+  .ContenedorLogin-Texto {
+    height: auto !important;
+    margin-bottom: 15px;
+  }
+
+  .ContenedorLogin-Texto h1 {
+    font-size: 26px;
+  }
+
+  .ContenedorLogin-Formulario {
+    height: auto !important;
+  }
+
+  .ContenedorLogin-Formulario form {
+    gap: 12px;
+  }
+
+  .ContenedorLogin-Formulario form label,
+  .ContenedorLogin-Formulario form input,
+  .Contenedor-Input-Password {
+    width: 90%;
+  }
+
+  .ContenedorLogin-Formulario form .Boton-Submit {
+    width: 75%;
+    height: 42px;
+    margin-top: 10px;
+  }
+}

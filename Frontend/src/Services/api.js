@@ -1,4 +1,4 @@
-const API_URL = 'http://localhost:3000/api';
+const API_URL ='http://localhost:3000/api' ;
 
 export const userService = {
     getUsers: async () => {
@@ -138,7 +138,7 @@ export const productService = {
 
             if (!response.ok){
                 const errorData = await response.json();
-                throw newError(errorData.error || 'Error al actualizar el producto');
+                throw new Error(errorData.error || 'Error al actualizar el producto');
             }
 
             return await response.json();
@@ -237,7 +237,7 @@ export const roleService = {
             const response = await fetch(`${API_URL}/roles`,{
                 method: 'POST',
                 headers: {
-                    'Content-Type' : 'appication/json'
+                    'Content-Type' : 'application/json'
                 },
                 body: JSON.stringify(roleData)
             });
