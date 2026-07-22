@@ -6,13 +6,13 @@
 
 .layout-contenido {
   flex: 1;
-  padding: 25px;
+  width: 100%;
   background-color: #f2f7ec;
   box-sizing: border-box;
   margin-left: 85px; 
   margin-bottom: 0;
+  padding: 0; 
 }
-
 
 @media (max-width: 768px) {
   .layout-contenido {

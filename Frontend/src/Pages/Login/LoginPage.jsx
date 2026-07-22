@@ -77,52 +77,56 @@ function LoginPage(){
 
     return(
         <>
-        <div className="Contenedor-Login">
-            <div className="ContenedorLogin-Izquierda">
-                <div className="ContenedorLogin-Texto">
-                    <h1>Login</h1>
-                </div>
-                <div className="ContenedorLogin-Formulario">
-                    <form onSubmit={handleSubmit}>
-                        <label htmlFor="Email">Email: </label>
-                        <input 
-                        type="email"
-                        id="Email"
-                        placeholder="ejemplocorreo@gmail.com"
-                        required
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                        />
-
-                        <label htmlFor="Password">Password: </label>
-                        <div className="Contenedor-Input-Password">
+        <div className="login-screen-wrapper">
+            <div className="Contenedor-Login">
+                <div className="ContenedorLogin-Izquierda">
+                    <div className="ContenedorLogin-Texto">
+                        <h1>Login</h1>
+                    </div>
+                    <div className="ContenedorLogin-Formulario">
+                        <form onSubmit={handleSubmit}>
+                            <label htmlFor="Email">Email: </label>
                             <input 
-                                id='Password'
-                                type={verPassword ? "text" : "password"} 
-                                placeholder='**********' 
-                                required
-                                value={password}
-                                onChange={(e) => setPassword(e.target.value)}
+                            type="email"
+                            id="Email"
+                            placeholder="ejemplocorreo@gmail.com"
+                            required
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
                             />
-                            <button 
-                                type="button" 
-                                className="Boton-Ver-Password"
-                                onClick={() => setVerPassword(!verPassword)}
-                            >
-                                {verPassword ? <FaEyeSlash size={20} /> : <FaEye size={20} />}
+
+                            <label htmlFor="Password">Password: </label>
+                            <div className="Contenedor-Input-Password">
+                                <input 
+                                    id='Password'
+                                    type={verPassword ? "text" : "password"} 
+                                    placeholder='**********' 
+                                    required
+                                    value={password}
+                                    onChange={(e) => setPassword(e.target.value)}
+                                />
+                                <button 
+                                    type="button" 
+                                    className="Boton-Ver-Password"
+                                    onClick={() => setVerPassword(!verPassword)}
+                                >
+                                    {verPassword ? <FaEyeSlash size={20} /> : <FaEye size={20} />}
+                                </button>
+                            </div>
+
+                            <button type='submit' className="Boton-Submit" disabled={cargando}>
+                                {cargando ? 'Iniciando sesión...' : 'Iniciar Sesión'}
                             </button>
-                        </div>
-
-                        <button type='submit' className="Boton-Submit" disabled={cargando}>
-                            {cargando ? 'Iniciando sesión...' : 'Iniciar Sesión'}
-                        </button>
-                    </form>
+                        </form>
+                    </div>
                 </div>
-            </div>
-            <div className="ContenedorLogin-Derecha">
+                <div className="ContenedorLogin-Derecha">
 
+                </div>
             </div>
         </div>
+
+        
         </>
     )
 }
