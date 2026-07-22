@@ -25,12 +25,13 @@ body {
 
 .ContenedorSuperior-UsersPage{
     width: 100%;
-    height: 10dvh;
+    height: 13dvh;
     display: flex;
     flex-direction: row;
     align-items: center;
     justify-content: flex-end;
     gap: 100px;
+    margin-right: 80px;
 }
 
 .ContenedorSuperior-UsersPage .Boton-Funcion{
@@ -55,7 +56,7 @@ body {
 }
 
 .ContenedorListado-UsersPage{
-    width: 95%;
+    width: 90%;
     height: 75dvh;
     background-color: #FFF;
     border-radius: 12px;
@@ -95,6 +96,7 @@ body {
     align-items: center;
     justify-content: flex-end;
     margin-right: 40px;
+    gap: 25px;
 }
 
 .Buscador-Usuarios {
@@ -124,4 +126,51 @@ body {
 
 .Buscador-Usuarios input:focus {
   border-color: #2b7a44;
+}
+
+.ContenedorSuperior-DerechaUsuarios .Select-FiltroUsuarios{
+    padding: 10px 15px 10px 10px;
+    border-radius: 6px;
+    border: 1px solid transparent;
+    color: #333;
+    font-size: 14px;
+    outline: none;
+    width: 220px;
+    transition: border-color 0.2s ease;
+}
+
+.Select-FiltroUsuarios select:focus{
+    border-color: #2b7a44;
+}
+
+.ContenedorEncabezado-ListadoUsuarios{
+    width: 100%;
+    height: 13dvh;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    border-bottom: 1px solid #96e072;
+
+}
+
+.ContenedorEncabezado-ListadoUsuarios ul{
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+}
+
+.ContenedorEncabezado-ListadoUsuarios li{
+    list-style: none;
+    flex: 1;
+    text-align: center;
+    color: #3da35d;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.Contenedor-ListadoUsuarios{
+    
 }
