@@ -3,6 +3,7 @@ import MainLayout from './Components/Layouts/MainLayout/MainLayout.jsx';
 import Navbar from './Components/Layouts/Navbar/Navbar.jsx';
 import MainPage from './Pages/MainPage/MainPage.jsx';
 import LoginPage from './Pages/Login/LoginPage.jsx';
+import UsersPage from './Pages/Users/UsersPage.jsx';
 import { Toaster } from 'react-hot-toast';
 
 
@@ -14,6 +15,7 @@ function App() {
         <Route path="/" element={<LoginPage />} />
         <Route element={<MainLayout />}>
           <Route path="/main-page" element={< MainPage/>} />
+          <Route path="/users-page" element={< UsersPage/>} />
         </Route>
 
 

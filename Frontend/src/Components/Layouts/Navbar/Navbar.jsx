@@ -30,7 +30,7 @@ function Navbar(){
                         </NavLink>
                     </li>
                     <li>
-                        <NavLink to="/user-page" className="nav-item">
+                        <NavLink to="/users-page" className="nav-item">
                             <FaUser className="Icono-Nav"/>
                         </NavLink>
                     </li>

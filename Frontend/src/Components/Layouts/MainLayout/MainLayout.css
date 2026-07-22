@@ -1,11 +1,12 @@
 .layout-contenedor {
   display: flex;
   min-height: 100vh;
+  width: 100%;
 }
 
 .layout-contenido {
   flex: 1;
-  padding: 20px;
+  padding: 25px;
   background-color: #f2f7ec;
   box-sizing: border-box;
   margin-left: 85px; 
