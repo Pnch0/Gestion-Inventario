@@ -1,6 +1,8 @@
 import React from "react";
 import { useState, useEffect } from "react";
 import { userService } from "../../Services/api.js";
+import '../../Pages/Users/UsersPage.css';
+import { FaEdit, FaTrashAlt  } from "react-icons/fa";
 
 function UserList() {
     const [users, setUsers] = useState([]);
@@ -49,26 +51,24 @@ function UserList() {
     return(
         <>
         <div className="UserList-Contenedor">
-            <h2>Lista de Usuarios</h2>
             {users.length === 0 ? (
                 <p>No hay usuarios registrados</p>
             ) : (
                 <ul className="ListaDatos-Usuarios">
                     {users.map((user) => (
-                        <li key={user.id_auth}>
+                        <li key={user.id_auth} className="Fila-Usuario">
                             <span>{user.rut}</span>
-                            <span>{user.nombre_rol}</span>
                             <span>{user.nombre}</span>
                             <span>{user.apellido}</span>
+                            <span>{user.nombre_rol}</span>
                             <span>{user.correo}</span>
                             <span>{user.telefono}</span>
-                            <span>Activo</span>
                             <div className="Acciones-Botones">
                                 <button type="button" onClick={() => setEditTarget(user)}>
-                                    Editar
+                                    <FaEdit className="Icono-Acciones"/>
                                 </button>
                                 <button type="button" onClick={() => handleDelete(user.id_auth)}>
-                                    Borrar
+                                    <FaTrashAlt className="Icono-Acciones"/>
                                 </button>
                             </div>
                         </li>

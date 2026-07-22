@@ -153,13 +153,13 @@ body {
 
 }
 
-.ContenedorEncabezado-ListadoUsuarios ul{
+.ContenedorEncabezado-ListadoUsuarios ul {
     width: 100%;
-    margin: 0;
     padding: 0;
-    display: flex;
-    flex-direction: row;
-    justify-content: space-around;
+    margin: 0;
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    align-items: center;
 }
 
 .ContenedorEncabezado-ListadoUsuarios li{
@@ -171,6 +171,56 @@ body {
     font-weight: bold;
 }
 
-.Contenedor-ListadoUsuarios{
-    
+.UserList-Contenedor {
+    width: 100%;
+    max-height: 60dvh;
+    overflow-y: auto;
+}
+
+.ListaDatos-Usuarios {
+    width: 100%;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.Fila-Usuario {
+    list-style: none;
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(7, 1fr); 
+    align-items: center;
+    padding: 40px 0;
+    border-bottom: 1px solid #96e072;
+
+}
+
+.Fila-Usuario span {
+    text-align: center;
+    font-size: 16px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap; 
+    color: #2b7a44;
+}
+
+
+.Acciones-Botones {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+}
+
+.Acciones-Botones button{
+    background-color: transparent;
+    border: none;
+    outline: none;
+    cursor: pointer;
+}
+
+.Acciones-Botones .Icono-Acciones{
+    font-size: 30px;
+    color: #2b7a44;
 }
