@@ -5,7 +5,7 @@ import '../../Pages/Users/UsersPage.css';
 import { FaEdit, FaTrashAlt } from "react-icons/fa";
 import toast, { Toaster } from 'react-hot-toast';
 
-function UserList() {
+function UserList({refreshTrigger}) {
     const [users, setUsers] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState('');
@@ -60,7 +60,7 @@ function UserList() {
 
     useEffect(() => {
         fetchUsers();
-    }, []);
+    }, [refreshTrigger]);
 
     const handleDelete = (idAuth) => {
         setUsuarioSeleccionadoId(idAuth);
