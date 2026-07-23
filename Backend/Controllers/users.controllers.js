@@ -1,4 +1,5 @@
 import {supabase, supabaseAdmin} from "../Services/supabase.js";
+import bcrypt from 'bcryptjs';
 
 
 const validarRutChileno = (rut) => {
@@ -10,31 +11,35 @@ const validarRutChileno = (rut) => {
 };
 
 
-export const CreateUser = async(req, res) =>{
-    const {rut, rol_id, nombre, apellido, correo, telefono, contraseña} = req.body;
+export const CreateUser = async (req, res) => {
+    const { rut, rol_id, nombre, apellido, correo, telefono, contraseña } = req.body;
 
     if (!correo || !contraseña || !rut) {
         return res.status(400).json({ error: "Correo, contraseña y RUT son obligatorios." });
     }
 
-    if(!validarRutChileno(rut)){
+    if (!validarRutChileno(rut)) {
         return res.status(400).json({ error: "El RUT ingresado no es valido "});
     }
 
     let userId = null;
 
-    try{
-        const { data: authData, error: authError } = await supabase.auth.signUp({
+    try {
+        const { data: authData, error: authError } = await supabaseAdmin.auth.admin.createUser({
             email: correo,
-            password: contraseña
+            password: contraseña,
+            email_confirm: true
         });
 
         if (authError) throw authError;
 
         userId = authData.user?.id;
 
-        if (userId){
-            const { data, error: dbError} = await supabase
+        if (userId) {
+            const salt = await bcrypt.genSalt(10);
+            const contraseñaEncriptada = await bcrypt.hash(contraseña, salt);
+
+            const { data, error: dbError } = await supabase
                 .from('Usuario')
                 .insert([
                     {
@@ -44,12 +49,13 @@ export const CreateUser = async(req, res) =>{
                         nombre: nombre,
                         apellido: apellido,
                         correo: correo,
-                        telefono: telefono
+                        telefono: telefono,
+                        contraseña: contraseñaEncriptada
                     }
                 ])
                 .select();
 
-            if (dbError){
+            if (dbError) {
                 console.error("Error de DB detectado: ", dbError);
                 throw dbError;
             }
