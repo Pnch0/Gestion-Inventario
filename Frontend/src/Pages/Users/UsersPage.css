@@ -226,7 +226,7 @@ body {
 }
 
 
-
+/* DISEÑO VENTANAS MODALES */
 
 .modal-overlay {
     position: fixed;
@@ -243,12 +243,11 @@ body {
     animation: fadeIn 0.2s ease-out;
 }
 
-
 .modal-content {
     background-color: #ffffff;
     width: 90%;
     max-width: 550px;
-    padding: 24px 28px;
+    padding: 28px 28px;
     border-radius: 12px;
     box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
     animation: slideUp 0.25s ease-out;
@@ -256,20 +255,18 @@ body {
     overflow-y: auto;
 }
 
-
 .modal-content h2 {
     margin: 0 0 4px 0;
     font-size: 1.4rem;
-    color: #1e293b;
+    color: #3da35d;
 }
 
 .modal-content h3 {
     margin: 0 0 20px 0;
     font-size: 0.95rem;
     font-weight: 500;
-    color: #64748b;
+    color: #2b7a44;
 }
-
 
 .Formulario-Crear-Usuario {
     display: flex;
@@ -286,13 +283,13 @@ body {
 .Campo-Formulario-Usuario label {
     font-size: 0.85rem;
     font-weight: 600;
-    color: #334155;
+    color: #2b7a44;
 }
 
 .Campo-Formulario-Usuario input,
 .Campo-Formulario-Usuario select {
     padding: 10px 12px;
-    border: 1px solid #cbd5e1;
+    border: 1px solid #3da35d;
     border-radius: 6px;
     font-size: 0.9rem;
     outline: none;
@@ -303,7 +300,7 @@ body {
 
 .Campo-Formulario-Usuario input:focus,
 .Campo-Formulario-Usuario select:focus {
-    border-color: #2563eb;
+    border-color: #2b7a44;
     box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
 }
 
@@ -352,6 +349,7 @@ body {
     background-color: #1d4ed8;
 }
 
+/* MODAL DE ELIMINACION */
 
 .Modal-Overlay-Alerta {
     position: fixed;
@@ -429,24 +427,6 @@ body {
 
 .Modal-Boton-Confirmar-Alerta:hover {
     background-color: #dc2626;
-}
-
-.Modal-Boton-Aceptar-Resultado-Alerta.exito {
-    background-color: #10b981;
-    color: white;
-    border: none;
-    padding: 8px 16px;
-    border-radius: 6px;
-    cursor: pointer;
-}
-
-.Modal-Boton-Aceptar-Resultado-Alerta.error {
-    background-color: #ef4444;
-    color: white;
-    border: none;
-    padding: 8px 16px;
-    border-radius: 6px;
-    cursor: pointer;
 }
 
 

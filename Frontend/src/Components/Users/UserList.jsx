@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import { userService } from "../../Services/api.js";
 import '../../Pages/Users/UsersPage.css';
 import { FaEdit, FaTrashAlt } from "react-icons/fa";
+import toast, { Toaster } from 'react-hot-toast';
 
 function UserList() {
     const [users, setUsers] = useState([]);
@@ -11,7 +12,38 @@ function UserList() {
     const [editTarget, setEditTarget] = useState(null);
     const [mostrarConfirmacion, setMostrarConfirmacion] = useState(false);
     const [usuarioSeleccionadoId, setUsuarioSeleccionadoId] = useState(null);
-    const [alertaResultado, setAlertaResultado] = useState(null);
+    const [enviando, setEnviando] = useState(false);
+
+    const toastStyles = {
+        exito: {
+            duration: 4000,
+            position: 'top-center',
+            style: {
+                border: '1px solid #BBF7D0',
+                padding: '16px',
+                color: '#166534',
+                background: '#EDFCF2',
+            },
+            iconTheme: {
+                primary: '#15803D',
+                secondary: '#EDFCF2',
+            },
+        },
+        error: {
+            duration: 4000,
+            position: 'top-center',
+            style: {
+                border: '1px solid #FECDD3',
+                padding: '16px',
+                color: '#991B1B',
+                background: '#FFF1F2',
+            },
+            iconTheme: {
+                primary: '#991B1B',
+                secondary: '#FFF1F2',
+            },
+        }
+    };
 
     const fetchUsers = async () => {
         try {
@@ -20,6 +52,7 @@ function UserList() {
             setUsers(data);
         } catch (error) {
             setError(error.message);
+            toast.error(`Error al cargar usuarios: ${error.message}`, toastStyles.error);
         } finally {
             setLoading(false);
         }
@@ -29,13 +62,11 @@ function UserList() {
         fetchUsers();
     }, []);
 
-    // Abre el modal de confirmación
     const handleDelete = (idAuth) => {
         setUsuarioSeleccionadoId(idAuth);
         setMostrarConfirmacion(true);
     };
 
-    // Ejecuta la eliminación tras confirmar
     const ejecutarEliminacion = async () => {
         if (!usuarioSeleccionadoId) return;
         setMostrarConfirmacion(false);
@@ -43,43 +74,29 @@ function UserList() {
         try {
             await userService.deleteUser(usuarioSeleccionadoId);
             setUsers(users.filter(user => user.id_auth !== usuarioSeleccionadoId));
-            
-            setAlertaResultado({
-                titulo: "Usuario Eliminado",
-                texto: "El usuario ha sido removido del sistema con éxito.",
-                tipo: "exito"
-            });
+            toast.success('El usuario ha sido removido con éxito.', toastStyles.exito);
         } catch (error) {
-            setAlertaResultado({
-                titulo: "Error al Eliminar",
-                texto: error.message || "No se pudo eliminar el usuario seleccionado.",
-                tipo: "error"
-            });
+            toast.error(error.message || 'No se pudo eliminar el usuario.', toastStyles.error);
         } finally {
             setUsuarioSeleccionadoId(null);
         }
     };
 
-    // Maneja la actualización del usuario desde el modal de edición
+
     const handleAction = async (e) => {
         e.preventDefault();
+        setEnviando(true);
+
         try {
-            await userService.updateUser(editTarget.id_auth, editTarget);
+            await userService.updateUser(editTarget.id_auth, editTarget);         
+            setEditTarget(null);
             
-            setAlertaResultado({
-                titulo: "¡Actualizado!",
-                texto: "Los datos del usuario se han guardado correctamente.",
-                tipo: "exito"
-            });
-            
-            setEditTarget(null); // Cierra la ventana modal
-            fetchUsers();        // Refresca la lista
+            toast.success('¡Los datos se han actualizado correctamente!', toastStyles.exito);
+            fetchUsers();
         } catch (error) {
-            setAlertaResultado({
-                titulo: "Error al Actualizar",
-                texto: error.message || "No se pudieron guardar los cambios.",
-                tipo: "error"
-            });
+            toast.error(error.message || 'No se pudieron guardar los cambios.', toastStyles.error);
+        } finally {
+            setEnviando(false);
         }
     };
     
@@ -88,6 +105,8 @@ function UserList() {
 
     return (
         <>
+        <Toaster />
+
         <div className="UserList-Contenedor">
             {users.length === 0 ? (
                 <p>No hay usuarios registrados</p>
@@ -115,7 +134,7 @@ function UserList() {
             )}
         </div>
 
-        {/* === MODAL DE EDICIÓN === */}
+
         {editTarget && (
             <div className="modal-overlay">
                 <div className="modal-content">
@@ -195,15 +214,27 @@ function UserList() {
                         </div>
 
                         <div className="Botones-Modal">
-                            <button type="button" className="Boton-Cancelar" onClick={() => setEditTarget(null)}>Cancelar</button>
-                            <button type="submit" className="Boton-Guardar">Guardar cambios</button>
+                            <button 
+                                type="button" 
+                                className="Boton-Cancelar" 
+                                onClick={() => setEditTarget(null)}
+                                disabled={enviando}
+                            >
+                                Cancelar
+                            </button>
+                            <button 
+                                type="submit" 
+                                className="Boton-Guardar"
+                                disabled={enviando}
+                            >
+                                {enviando ? 'Guardando...' : 'Guardar cambios'}
+                            </button>
                         </div>
                     </form>
                 </div>
             </div>
         )}
 
-        {/* === MODAL CONFIRMACIÓN ELIMINAR === */}
         {mostrarConfirmacion && (
             <div className="Modal-Overlay-Alerta" style={{ zIndex: 10000 }}>
                 <div className="Modal-Contenedor-Peligro peligro">
@@ -220,30 +251,6 @@ function UserList() {
                         </button>
                         <button type="button" className="Modal-Boton-Confirmar-Alerta" onClick={ejecutarEliminacion}>
                             Sí, eliminar
-                        </button>
-                    </div>
-                </div>
-            </div>
-        )}
-
-
-        {alertaResultado && (
-            <div className="Modal-Overlay-Alerta" style={{ zIndex: 10001 }}>
-                <div className={`Modal-Contenedor-Peligro ${alertaResultado.tipo}`}>
-                    <div className="Modal-Header-Alerta">
-                        <h3>{alertaResultado.titulo}</h3>
-                        <button type="button" className="Modal-Cerrar-Alerta" onClick={() => setAlertaResultado(null)}>&times;</button>
-                    </div>
-                    <div className="Modal-Cuerpo-Alerta">
-                        <p>{alertaResultado.texto}</p>
-                    </div>
-                    <div className="Modal-Footer-Alerta">
-                        <button 
-                            type="button"
-                            className={`Modal-Boton-Aceptar-Resultado-Alerta ${alertaResultado.tipo}`} 
-                            onClick={() => setAlertaResultado(null)}
-                        >
-                            Entendido
                         </button>
                     </div>
                 </div>
