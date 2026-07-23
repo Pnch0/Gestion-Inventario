@@ -175,34 +175,39 @@ export const UpdateUser = async(req, res) =>{
 };
 
 
-export const DeleteUser = async(req, res) =>{
+export const DeleteUser = async (req, res) => {
     const id = req.params.id.trim();
 
-    try{
+    try {
         const { error: dbError } = await supabaseAdmin
             .from('Usuario')
             .delete()
             .eq('id_auth', id);
 
         if (dbError) {
-            console.error("Error al eliminar en la Base de Datos: ", dbError.message);
-            return res.status(400).json({ error: "No se pudo eliminar el registro del usuario", detalle: dbError.message });
+            console.error("Error al eliminar en la BD:", dbError);
+            return res.status(400).json({ 
+                error: "No se pudo eliminar el registro de la base de datos", 
+                detalle: dbError.message,
+                hint: dbError.hint || dbError.details
+            });
         }
 
         const { error: authError } = await supabaseAdmin.auth.admin.deleteUser(id);
 
-        if (authError){
-            console.error("Fallo critico en Auth", authError.message);
+        if (authError) {
+            console.error("Fallo al eliminar en Supabase Auth:", authError.message);
             return res.status(400).json({
-                error: "No se pudo eliminar el usuario",
+                error: "El usuario se borró de la BD pero no de Auth",
                 detalle: authError.message
             });
         }
 
-        res.json({ message: "Usuario y todos sus datos relacionados eliminados con exito" });
-    
-    } catch (error){
-        res.status(500).json({ error: error.message });
+        return res.json({ message: "Usuario eliminado con éxito de la BD y de Auth" });
+
+    } catch (error) {
+        console.error("Error inesperado en servidor:", error);
+        return res.status(500).json({ error: error.message });
     }
 };
 
