@@ -1,165 +1,164 @@
-import React from "react";
-import { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { userService } from "../../Services/api.js";
+import toast from 'react-hot-toast';
 
-
-function CreateUser({onUserCreated}){
+function CreateUser({ isOpen, onClose, onUserCreated }) {
     const [formData, setFormData] = useState({
         rut: '',
-        rol_id: '',
         nombre: '',
         apellido: '',
         correo: '',
         telefono: '',
-        contraseña: '',
+        rol_id: '',
+        contraseña: ''
     });
 
-    const [error, setError] = useState('');
-    const [success, setSuccess] = useState('');
-    const [loading, setLoading] = useState(false);
+    const [enviando, setEnviando] = useState(false);
 
-    const handleChange = (e) =>{
-        setFormData({
-            ...formData,
-            [e.target.name] : e.target.value
-        });
+    if (!isOpen) return null;
+
+    const handleChange = (e) => {
+        const { id, value } = e.target;
+        setFormData(prev => ({
+            ...prev,
+            [id]: id === 'rol_id' ? parseInt(value) || '' : value
+        }));
     };
 
-
-    const handleSubmit = async (e) =>{
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        setError('');
-        setSuccess('');
-        setLoading('');
+        setEnviando(true);
 
-        if(!formData.correo || !formData.contraseña || !formData.rut){
-            setError(' Correo, contraseña y RUT son obligatorios');
-            setLoading(false);
-            return;
-        }
+        try {
+            await userService.createUser(formData);
+            toast.success('¡Usuario registrado con éxito!');
 
-        try{
-            const response = await fetch('/api/users', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(formData)
+            setFormData({
+                rut: '', nombre: '', apellido: '', correo: '',
+                telefono: '', rol_id: '', contraseña: ''
             });
 
-        const data = await response.json();
-
-        if (!response.ok){
-            throw new Error(data.error || 'Error al crear el usuario');
+            if (onUserCreated) onUserCreated();
+            onClose();
+        } catch (error) {
+            toast.error(error.message || 'Error al registrar al usuario');
+        } finally {
+            setEnviando(false);
         }
+    };
 
-        setSuccess('Usuario creado con éxito');
-        setFormData({
-            rut: '',
-            rol_id: '',
-            nombre: '',
-            apellido: '',
-            correo: '',
-            telefono: '',
-            contraseña: ''
-        });
+    return (
+        <div className="modal-overlay">
+            <div className="modal-content">
+                <form className="Formulario-Crear-Usuario" onSubmit={handleSubmit}>
+                    <h2>Agregar Nuevo Usuario</h2>
 
-        if (onUserCreated) onUserCreated();
-        
-    } catch (error){
-        setError(error.message);
-    
-    } finally{
-        setLoading(false)
-    }
-};
+                    <div className="Campo-Formulario-Usuario">
+                        <label htmlFor="rut">RUT:</label>
+                        <input
+                            id="rut"
+                            value={formData.rut}
+                            onChange={handleChange}
+                            placeholder="12345678-9"
+                            required
+                        />
+                    </div>
 
-return(
-    <>
-    <div className="CreateUser-Contenedor">
-        <h2>Crear Nuevo Usuario</h2>
+                    <div className="Fila-Doble">
+                        <div className="Campo-Formulario-Usuario">
+                            <label htmlFor="nombre">Nombre:</label>
+                            <input
+                                id="nombre"
+                                value={formData.nombre}
+                                onChange={handleChange}
+                                placeholder="Nombre"
+                                required
+                            />
+                        </div>
+                        <div className="Campo-Formulario-Usuario">
+                            <label htmlFor="apellido">Apellido:</label>
+                            <input
+                                id="apellido"
+                                value={formData.apellido}
+                                onChange={handleChange}
+                                placeholder="Apellido"
+                                required
+                            />
+                        </div>
+                    </div>
 
-        {error && <div className="error-message" style={{color: 'red'}}>{error}</div>}
-        {success && <div className="success-message" style={{ color: 'green' }}>{success}</div>}
+                    <div className="Campo-Formulario-Usuario">
+                        <label htmlFor="correo">Correo:</label>
+                        <input
+                            id="correo"
+                            type="email"
+                            value={formData.correo}
+                            onChange={handleChange}
+                            placeholder="correo@ejemplo.com"
+                            required
+                        />
+                    </div>
 
-        <form onSubmit={handleSubmit}>
-            <div>
-                <label id="Rut"> RUT (con guión y dígito verificador): </label>
-                <input 
-                type="text" 
-                id="Rut"
-                name="rut"
-                value={formData.rut}
-                onChange={handleChange}
-                placeholder="12345678-K"
-                required
-                />
+                    <div className="Campo-Formulario-Usuario">
+                        <label htmlFor="contraseña">Contraseña:</label>
+                        <input
+                            id="contraseña"
+                            type="password"
+                            value={formData.contraseña}
+                            onChange={handleChange}
+                            placeholder="••••••••"
+                            required
+                        />
+                    </div>
+
+                    <div className="Fila-Doble">
+                        <div className="Campo-Formulario-Usuario">
+                            <label htmlFor="rol_id">Rol:</label>
+                            <select
+                                id="rol_id"
+                                value={formData.rol_id}
+                                onChange={handleChange}
+                                required
+                            >
+                                <option value="" disabled>Seleccione un Rol</option>
+                                <option value="1">Administrador</option>
+                                <option value="2">Vendedor</option>
+                                <option value="3">Bodega</option>
+                            </select>
+                        </div>
+
+                        <div className="Campo-Formulario-Usuario">
+                            <label htmlFor="telefono">Teléfono:</label>
+                            <input
+                                id="telefono"
+                                value={formData.telefono}
+                                onChange={handleChange}
+                                placeholder="+56 9 1234 5678"
+                            />
+                        </div>
+                    </div>
+
+                    <div className="Botones-Modal">
+                        <button 
+                            type="button" 
+                            className="Boton-Cancelar" 
+                            onClick={onClose}
+                            disabled={enviando}
+                        >
+                            Cancelar
+                        </button>
+                        <button 
+                            type="submit" 
+                            className="Boton-Guardar"
+                            disabled={enviando}
+                        >
+                            {enviando ? 'Guardando...' : 'Crear Usuario'}
+                        </button>
+                    </div>
+                </form>
             </div>
-
-            <div>
-                <label id="Nombre">Nombre: </label>
-                <input 
-                type="text"
-                id="Nombre"
-                name="nombre"
-                value={formData.nombre}
-                onChange={handleChange}
-                />
-            </div>
-
-            <div>
-                <label id="Apellido">Apellido: </label>
-                <input 
-                type="text"
-                id="Apellido"
-                name="apellido"
-                value={formData.apellido}
-                onChange={handleChange}
-                />
-            </div>
-
-            <div>
-                <label id="Correo"> Correo Electronico: </label>
-                <input 
-                type="email" 
-                id="Correo"
-                name="correo"
-                value={formData.correo}
-                onChange={handleChange}
-                required
-                />
-            </div>
-
-            <div>
-                <label id="Telefono">Telefono: </label>
-                <input 
-                type="text" 
-                id="Telefono"
-                name="telefono"
-                value={formData.telefono}
-                onChange={handleChange}
-                />
-            </div>
-
-            <div>
-                <label id="Contraseña">Contraseña: </label>
-                <input 
-                type="password" 
-                id="Contraseña"
-                name="contraseña"
-                value={formData.contraseña}
-                onChange={handleChange}
-                required
-                />
-            </div>
-
-            <button type="submit" disabled={loading}>
-                {loading ? 'Guardando...' : 'Crear Usuario'}
-            </button>
-        </form>
-    </div>
-    </>
-);
+        </div>
+    );
 }
 
 export default CreateUser;

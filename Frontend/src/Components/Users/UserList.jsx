@@ -4,6 +4,7 @@ import { userService } from "../../Services/api.js";
 import '../../Pages/Users/UsersPage.css';
 import { FaEdit, FaTrashAlt } from "react-icons/fa";
 import toast, { Toaster } from 'react-hot-toast';
+import { ClipLoader } from "react-spinners";
 
 function UserList({refreshTrigger}) {
     const [users, setUsers] = useState([]);
@@ -100,7 +101,11 @@ function UserList({refreshTrigger}) {
         }
     };
     
-    if (loading) return <div>Cargando usuarios...</div>;
+    if (loading) return (
+    <div style={{ display: 'flex', justifyContent: 'center', padding: '50px' }}>
+        <ClipLoader color="#3da35d" loading={loading} size={50} />
+    </div>
+    );
     if (error) return <div style={{ color: 'red' }}>Error: {error}</div>;
 
     return (
