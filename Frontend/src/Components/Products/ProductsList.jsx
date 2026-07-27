@@ -1,15 +1,14 @@
 import React from "react";
 import { useState, useEffect } from "react";
 import { productService } from "../../Services/api.js";
-import { FaEdit, FaTrashAlt } from "react-icons/fa";
+import { FaEdit, FaTrashAlt, FaBox } from "react-icons/fa";
 import '../../Pages/Products/ProductsPage.css'
 
-function ProductsList(){
+function ProductsList({ refreshTrigger }){
     const [products, setProducts] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState('');
     const [editTarget, setEditTarget] = useState(null);
-
 
     const fetchProducts = async () =>{
         try{
@@ -27,8 +26,7 @@ function ProductsList(){
 
     useEffect(() =>{
         fetchProducts();
-    }, []);
-
+    }, [refreshTrigger]);
 
     const handleDelete = async (producto_id) =>{
         if (!window.confirm('¿Estas seguro que deseas eliminar este producto?')){
@@ -38,7 +36,7 @@ function ProductsList(){
         try{
             const data = await productService.deleteProduct(producto_id);
 
-            alert(data.message || 'Producto eliminado con exito');;
+            alert(data.message || 'Producto eliminado con exito');
 
             setProducts(products.filter(product => product.producto_id !== producto_id));
 
@@ -60,13 +58,27 @@ function ProductsList(){
                 <ul className="ListaDatos-Productos">
                     {products.map((product) =>(
                         <li key={product.producto_id} className="Fila-Productos">
-                            <span>{product.imagen}</span>
+                            <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                                <div className="Contenedor-Imagen-Tabla">
+                                    {product.imagen_url ? (
+                                        <img 
+                                            src={product.imagen_url} 
+                                            alt={product.nombre} 
+                                            className="Imagen-Producto-Tabla"
+                                        />
+                                    ) : (
+                                        <div className="Sin-Imagen-Placeholder">
+                                            <FaBox />
+                                        </div>
+                                    )}
+                                </div>
+                            </div>
                             <span>{product.nombre}</span>
                             <span>{product.categoria}</span>
                             <span>{product.stock}</span>
                             <span>{product.ubicacion}</span>
                             <span>{product.descripcion}</span>
-                        
+
                             <div className="Acciones-Botones">
                                 <button type="button" onClick={() => setEditTarget(product)}>
                                     <FaEdit className="Icono-Acciones"/>
