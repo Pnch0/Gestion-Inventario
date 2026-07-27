@@ -1,6 +1,8 @@
 import React from "react";
 import { useState, useEffect } from "react";
 import { productService } from "../../Services/api.js";
+import { FaEdit, FaTrashAlt } from "react-icons/fa";
+import '../../Pages/Products/ProductsPage.css'
 
 function ProductsList(){
     const [products, setProducts] = useState([]);
@@ -51,38 +53,27 @@ function ProductsList(){
     return(
         <>
         <div className="ProductList-Contenedor">
-            <h2>Lista de Productos</h2>
             {products.length === 0 ? (
                 <p>No hay productos registrados</p>
 
             ) : (
                 <ul className="ListaDatos-Productos">
                     {products.map((product) =>(
-                        <li key={product.producto_id}>
-                            {product.imagen_url ? (
-                                <img 
-                                    src={product.imagen_url} 
-                                    alt={product.nombre} 
-                                    style={{ width: '50px', height: '50px', objectFit: 'cover', borderRadius: '4px' }} 
-                                />
-                            ) : (
-                                <div style={{ width: '50px', height: '50px', backgroundColor: '#ccc', borderRadius: '4px', display: 'inline-block' }}>No img</div>
-                            )}
+                        <li key={product.producto_id} className="Fila-Productos">
+                            <span>{product.imagen}</span>
                             <span>{product.nombre}</span>
                             <span>{product.categoria}</span>
-                            <span>{product.marca}</span>
                             <span>{product.stock}</span>
-                            <span>{product.precio_compra}</span>
-                            <span>{product.precio_venta}</span>
                             <span>{product.ubicacion}</span>
                             <span>{product.descripcion}</span>
-
+                            
+                            {/* Contenedor de acciones directamente como el 7mo elemento de la fila */}
                             <div className="Acciones-Botones">
                                 <button type="button" onClick={() => setEditTarget(product)}>
-                                    Editar
+                                    <FaEdit className="Icono-Acciones"/>
                                 </button>
                                 <button type="button" onClick={() => handleDelete(product.producto_id)}>
-                                    Borrar
+                                    <FaTrashAlt className="Icono-Acciones"/>
                                 </button>
                             </div>
                         </li>

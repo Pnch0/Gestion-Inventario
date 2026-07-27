@@ -1,0 +1,227 @@
+body {
+    font-family: sans-serif;
+    box-sizing: border-box;
+    margin: 0;
+    min-height: 100vh;
+    background-color: #f2f7ec;
+
+}
+
+#root {
+    width: 100%;
+    min-height: 100vh;
+    display: block;
+    
+}
+
+.Contenedor-ListProducts{
+    width: 100%;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 50px;
+}
+
+.ContenedorSuperior-ListProducts{
+    width: 100%;
+    height: 13dvh;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 100px;
+    margin-right: 80px;
+}
+
+
+.ContenedorSuperior-ListProducts .Boton-Funcion{
+    background-color: #3da35d;
+    padding: 15px 25px;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    color: #FFF;
+    font-size: 16px;
+}
+
+.ContenedorSuperior-ListProducts .Boton-Producto{
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+}
+
+.Boton-Producto .Icono-Perfil{
+    font-size: 45px;
+    color: #3da35d;
+}
+
+.ContenedorListado-ListadoProductos{
+    width: 90%;
+    height: 75dvh;
+    background-color: #FFF;
+    border-radius: 12px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+    display: flex;
+    flex-direction: column;
+}
+
+.ContenedorSuperior-ListadoProductos{
+    width: 100%;
+    height: 12dvh;
+    background-color: #3da35d;
+    border-radius: 12px 12px 0px 0px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.ContenedorSuperior-IzquierdaProductos{
+    width: 30%;
+    height: 12dvh;
+    border-radius: 12px 0px 0px 0px;
+    display: flex;
+    align-items: center;
+}
+
+.ContenedorSuperior-IzquierdaProductos h2{
+    color: #FFF;
+    padding: 20px;
+}
+
+
+.ContenedorSuperior-DerechaProductos{
+    width: 70%;
+    height: 12dvh;
+    border-radius: 0px 12px 0px 0px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    margin-right: 40px;
+    gap: 25px;
+}
+
+.Buscador-Productos {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+}
+
+.Buscador-Productos .Icono-Buscador {
+  position: absolute;
+  left: 12px;
+  color: #3da35d;
+  font-size: 16px;
+  pointer-events: none;
+}
+
+.Buscador-Productos input {
+  padding: 10px 15px 10px 38px;
+  border-radius: 6px;
+  border: 1px solid transparent;
+  color: #333;
+  font-size: 14px;
+  outline: none;
+  width: 220px;
+  transition: border-color 0.2s ease;
+}
+
+.Buscador-Productos input:focus {
+  border-color: #2b7a44;
+}
+
+.ContenedorSuperior-DerechaProductos .Select-FiltroProductos{
+    padding: 10px 15px 10px 10px;
+    border-radius: 6px;
+    border: 1px solid transparent;
+    color: #333;
+    font-size: 14px;
+    outline: none;
+    width: 220px;
+    transition: border-color 0.2s ease;
+}
+
+.Select-FiltroProductos select:focus{
+    border-color: #2b7a44;
+}
+
+
+.ContenedorEncabezado-ListadoProductos{
+    width: 100%;
+    height: 13dvh;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    border-bottom: 1px solid #96e072;
+
+}
+
+.ContenedorEncabezado-ListadoProductos ul {
+    width: 100%;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    align-items: center;
+    list-style: none;
+}
+
+.ContenedorEncabezado-ListadoProductos li {
+    text-align: center;
+    color: #3da35d;
+    font-size: 18px;
+    font-weight: bold;
+    padding: 10px 0;
+}
+
+.ListaDatos-Productos {
+    width: 100%;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+}
+
+.Fila-Productos {
+    list-style: none;
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(7, 1fr); 
+    align-items: center;
+    padding: 40px 0;
+    border-bottom: 1px solid #96e072;
+    box-sizing: border-box;
+}
+
+.Fila-Productos span {
+    text-align: center;
+    font-size: 16px;
+    color: #2b7a44;
+    padding: 0 8px;
+    display: -webkit-box;
+    line-clamp: 3;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    word-break: break-word;
+}
+
+.Acciones-Botones {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 12px;
+}
+
+.Acciones-Botones button{
+    background-color: transparent;
+    border: none;
+    outline: none;
+    cursor: pointer;
+}
+
+.Acciones-Botones .Icono-Acciones{
+    font-size: 30px;
+    color: #2b7a44;
+}
