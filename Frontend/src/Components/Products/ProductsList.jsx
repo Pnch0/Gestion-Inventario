@@ -66,8 +66,7 @@ function ProductsList(){
                             <span>{product.stock}</span>
                             <span>{product.ubicacion}</span>
                             <span>{product.descripcion}</span>
-                            
-                            {/* Contenedor de acciones directamente como el 7mo elemento de la fila */}
+                        
                             <div className="Acciones-Botones">
                                 <button type="button" onClick={() => setEditTarget(product)}>
                                     <FaEdit className="Icono-Acciones"/>

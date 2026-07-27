@@ -2,10 +2,15 @@ import './ProductsPage.css';
 import { useState } from 'react';
 import { FaRegUserCircle, FaSearch } from "react-icons/fa";
 import ProductsList from '../../Components/Products/ProductsList.jsx';
+import CreateProduct from '../../Components/Products/CreateProducts.jsx';
 
 function ProductsPage(){
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [refreshTrigger, setRefreshTrigger] = useState(0);
+
+    const handleProductCreated = () => {
+        setRefreshTrigger(prev => prev + 1);
+    };
 
     return(
         <>
@@ -59,6 +64,12 @@ function ProductsPage(){
                 </div>
             </div>
         </div>
+
+        <CreateProduct 
+            isOpen={isModalOpen}
+            onClose={() => setIsModalOpen(false)}
+            onProductCreated={handleProductCreated}
+        />
 
         </>
     )

@@ -19,6 +19,7 @@
   },
   "dependencies": {
     "bcryptjs": "^3.0.3",
+    "browser-image-compression": "^2.0.2",
     "react": "^19.2.8",
     "react-dom": "^19.2.8",
     "react-hot-toast": "^2.6.0",

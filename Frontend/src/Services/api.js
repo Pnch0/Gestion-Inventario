@@ -109,21 +109,21 @@ export const productService = {
         }
     },
 
-    createProducts: async (productFormData) =>{
-        try{
-            const response = await fetch(`${API_URL}/products`,{
+    createProducts: async (productFormData) => {
+        try {
+            const response = await fetch(`${API_URL}/products`, {
                 method: 'POST',
                 body: productFormData
             });
-        
-            if (!response.ok){
+
+            if (!response.ok) {
                 const errorData = await response.json();
                 throw new Error(errorData.error || 'Error al registrar el producto');
             }
 
             return await response.json();
 
-        } catch(error){
+        } catch (error) {
             console.error("Error en el servicio createProduct: ", error.message);
             throw error;
         }
@@ -131,7 +131,7 @@ export const productService = {
 
     updateProduct: async(id, productFormData) =>{
         try{
-            const response = await fetch(`${API_URL}/product/${id}`,{
+            const response = await fetch(`${API_URL}/products/${id}`,{
                 method: 'PUT',
                 body: productFormData
             });
@@ -151,7 +151,7 @@ export const productService = {
 
     deleteProduct: async(id) =>{
         try{
-            const response = await fetch(`${API_URL}/product/${id}`,{
+            const response = await fetch(`${API_URL}/products/${id}`,{
                 method: 'DELETE'
             });
 
