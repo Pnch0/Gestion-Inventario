@@ -129,25 +129,29 @@ export const productService = {
         }
     },
 
-    updateProduct: async(id, productFormData) =>{
-        try{
-            const response = await fetch(`${API_URL}/products/${id}`,{
-                method: 'PUT',
-                body: productFormData
-            });
+    updateProduct: async (id, productData) => {
+    try {
+        const response = await fetch(`${API_URL}/products/${id}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(productData)
+        });
 
-            if (!response.ok){
-                const errorData = await response.json();
-                throw new Error(errorData.error || 'Error al actualizar el producto');
-            }
+        const data = await response.json();
 
-            return await response.json();
-        
-        } catch(error){
-            console.error("Error en el servicio updateProduct", error.message);
-            throw error;
+        if (!response.ok) {
+            throw new Error(data.message || 'Error al actualizar el producto');
         }
-    },
+
+        return data;
+
+    } catch (error) {
+        console.error("Error en el servicio updateProduct:", error.message);
+        throw error;
+    }
+},
 
     deleteProduct: async(id) =>{
         try{
