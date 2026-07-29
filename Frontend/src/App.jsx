@@ -4,6 +4,7 @@ import MainPage from './Pages/MainPage/MainPage.jsx';
 import LoginPage from './Pages/Login/LoginPage.jsx';
 import UsersPage from './Pages/Users/UsersPage.jsx';
 import ProductsPage from './Pages/Products/ProductsPage.jsx';
+import SalesPage from './Pages/Sales/SalesPage.jsx';
 import { Toaster } from 'react-hot-toast';
 
 function App() {
@@ -17,6 +18,7 @@ function App() {
           <Route path="/main-page" element={<MainPage />} />
           <Route path="/users-page" element={<UsersPage />} />
           <Route path="/list-page" element={<ProductsPage />} />
+          <Route path="/sales-page" element={<SalesPage />} />
         </Route>
 
         <Route path="*" element={<h2>Página no encontrada</h2>} />

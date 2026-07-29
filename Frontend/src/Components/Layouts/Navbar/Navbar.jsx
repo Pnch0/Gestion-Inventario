@@ -25,7 +25,7 @@ function Navbar(){
                         </NavLink>
                     </li>
                     <li>
-                        <NavLink to="/shop-page" className="nav-item">
+                        <NavLink to="/sales-page" className="nav-item">
                             <FaShoppingBasket className="Icono-Nav"/>
                         </NavLink>
                     </li>
