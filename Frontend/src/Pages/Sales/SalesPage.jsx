@@ -55,7 +55,7 @@ function SalesPage(){
                 </div>
 
                 <div className="Contenedor-ListadoVentas">
-
+                    <SalesList refreshTrigger={refreshTrigger}/>
                 </div>
 
             </div>

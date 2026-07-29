@@ -171,3 +171,56 @@ body {
     word-break: break-word;
     hyphens: auto;
 }
+
+
+.ListaDatos-Ventas {
+    width: 100%;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+}
+
+.Fila-Ventas {
+    list-style: none;
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(7, 1fr); 
+    align-items: center;
+    padding: 10px 0;
+    border-bottom: 1px solid #96e072;
+    box-sizing: border-box;
+}
+
+.Fila-Ventas span {
+    text-align: center;
+    font-size: 16px;
+    color: #2b7a44;
+    padding: 0 8px;
+    display: -webkit-box;
+    line-clamp: 3;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    word-break: break-word;
+}
+
+.Acciones-Botones {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 12px;
+}
+
+.Acciones-Botones button{
+    background-color: transparent;
+    border: none;
+    outline: none;
+    cursor: pointer;
+}
+
+.Acciones-Botones .Icono-Acciones{
+    font-size: 30px;
+    color: #2b7a44;
+}
