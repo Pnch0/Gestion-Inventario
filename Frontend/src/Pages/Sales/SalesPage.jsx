@@ -8,12 +8,17 @@ function SalesPage(){
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [refreshTrigger, setRefreshTrigger] = useState(0);
 
+    const handleSaleCreated = () => {
+        setRefreshTrigger(prev => prev + 1);
+    };
+
     return(
         <>
         <div className="Contenedor-SalesPage">
             <div className="ContenedorSuperior-SalesPage">
                 <button
                 className="Boton-Funcion"
+                onClick={() => setIsModalOpen(true)}
                 >
                     Registrar Venta
                 </button>
@@ -60,6 +65,12 @@ function SalesPage(){
 
             </div>
         </div>
+
+        <CreateSales
+            isOpen={isModalOpen}
+            onClose={() => setIsModalOpen(false)}
+            onSaleCreated={handleSaleCreated}
+        />
         </>
     )
 }

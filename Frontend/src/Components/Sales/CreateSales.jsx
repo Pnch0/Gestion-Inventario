@@ -1,9 +1,8 @@
-import React from "react";
-import { useState, useEffect } from "react";
-import { saleService } from "../../Services/api.js";
+import React, { useState, useEffect } from "react";
+import { saleService, productService } from "../../Services/api";
+import toast from 'react-hot-toast';
 
-
-function CreateSales(){
+function CreateSales({ isOpen, onClose, onSaleCreated }) {
     const [rut, setRut] = useState('');
     const [detalles, setDetalles] = useState([]);
     const [productos, setProductos] = useState([]);
@@ -14,50 +13,43 @@ function CreateSales(){
         cantidad_venta: 1,
         precio_unitario: 0,
         stockDisponible: 0
-    })
+    });
 
-    const [error, setError] = useState('');
-    const [success, setSuccess] = useState('');
     const [loading, setLoading] = useState(false);
 
-    useEffect(() =>{
-        const fetchProductos = async () =>{
-            try{
-                const response = await fetch(`/api/products`);
-                const data = await response.json();
+    useEffect(() => {
+        if (!isOpen) return;
 
-                if (!response.ok){
-                    setProductos(data);
-            
-                } else{
-                    setError('No se pudieron cargar los productos');
-                }
-            
-            } catch (error){
-                setError('Error al conectar con el servidor para obtener los productos')
+        const fetchProductos = async () => {
+            try {
+                const data = await productService.getProducts();
+                setProductos(data);
+            } catch (error) {
+                console.error("Error al obtener productos:", error);
+                toast.error('Error al conectar con el servidor para obtener los productos');
             }
         };
 
         fetchProductos();
-    }, []);
+    }, [isOpen]);
 
-    const handleProductChange = (e) =>{
+    if (!isOpen) return null;
+
+    const handleProductChange = (e) => {
         const { name, value, type } = e.target;
         const val = type === 'number' ? Number(value) : value;
 
-
-        if (name === 'producto_id'){
-            const prodSeleccionado = productos.find(p => p.producto_id === val);
-            if(prodSeleccionado){
+        if (name === 'producto_id') {
+            const prodSeleccionado = productos.find(p => p.producto_id === Number(val));
+            if (prodSeleccionado) {
                 setCurrentProduct({
-                    producto_id: val,
+                    producto_id: Number(val),
                     nombre: prodSeleccionado.nombre,
-                    precio_unitario: prodSeleccionado.precio_venta,
-                    stockDisponible: prodSeleccionado.stock,
+                    precio_unitario: prodSeleccionado.precio_venta || 0,
+                    stockDisponible: prodSeleccionado.stock || 0,
                     cantidad_venta: 1,
                 });
-
-            } else{
+            } else {
                 setCurrentProduct({
                     producto_id: '',
                     nombre: '',
@@ -66,46 +58,45 @@ function CreateSales(){
                     stockDisponible: 0
                 });
             }
-        } else{
-            setCurrentProduct(prev =>({
+        } else {
+            setCurrentProduct(prev => ({
                 ...prev,
                 [name]: val
             }));
         }
     };
 
-    const handleAddProduct = (e) =>{
+    const handleAddProduct = (e) => {
         e.preventDefault();
-        setError('');
 
-        if (!currentProduct.producto_id){
-            setError('Por favor, selecciona un producto.');
+        if (!currentProduct.producto_id) {
+            toast.error('Por favor, selecciona un producto.');
             return;
         }
 
-        if (currentProduct.cantidad_venta <= 0){
-            setError('La cantidad de venta debe ser mayor a 0.');
+        if (currentProduct.cantidad_venta <= 0) {
+            toast.error('La cantidad de venta debe ser mayor a 0.');
             return;
         }
 
-        if (currentProduct.cantidad_venta > currentProduct.stockDisponible){
-            setError(`Stock insuficiente. Solo quedan ${currentProduct.stockDisponible} unidades.`);
+        if (currentProduct.cantidad_venta > currentProduct.stockDisponible) {
+            toast.error(`Stock insuficiente. Solo quedan ${currentProduct.stockDisponible} unidades.`);
             return;
         }
 
         const existeIndex = detalles.findIndex(item => item.producto_id === currentProduct.producto_id);
-        if (existeIndex !== -1){
+        if (existeIndex !== -1) {
             const nuevosDetalles = [...detalles];
             const nuevaCantidad = nuevosDetalles[existeIndex].cantidad_venta + currentProduct.cantidad_venta;
 
-            if (nuevaCantidad > currentProduct.stockDisponible){
-                setError(`No puedes agregar más de ${currentProduct.stockDisponible} unidades de este producto`);
+            if (nuevaCantidad > currentProduct.stockDisponible) {
+                toast.error(`No puedes agregar más de ${currentProduct.stockDisponible} unidades.`);
                 return;
             }
 
             nuevosDetalles[existeIndex].cantidad_venta = nuevaCantidad;
             setDetalles(nuevosDetalles);
-        } else{
+        } else {
             setDetalles([
                 ...detalles,
                 {
@@ -123,205 +114,201 @@ function CreateSales(){
             cantidad_venta: 1,
             precio_unitario: 0,
             stockDisponible: 0
-        })
+        });
     };
 
-
-    const handleRemoveProduct = (id) =>{
+    const handleRemoveProduct = (id) => {
         setDetalles(detalles.filter(item => item.producto_id !== id));
     };
 
-    const calcularTotalGeneral = () =>{
+    const calcularTotalGeneral = () => {
         return detalles.reduce((sum, item) => sum + (item.cantidad_venta * item.precio_unitario), 0);
     };
 
-    const handleSubmit = async (e) =>{
-        e.preventDefault();
-        setError('');
-        setSuccess('');
-        setLoading(true);
+    const handleSubmit = async (e) => {
+    e.preventDefault();
+    setLoading(true);
 
-        if (!rut){
-            setError('El RUT del cliente es obligatorio');
-            setLoading(false);
-            return;
-        }
+    if (!rut) {
+        toast.error('El RUT del cliente es obligatorio');
+        setLoading(false);
+        return;
+    }
 
-        if (detalles.length === 0) {
-            setError('Debes agregar al menos un producto al detalle de la venta');
-            setLoading(false);
-            return;
-        }
+    if (detalles.length === 0) {
+        toast.error('Debes agregar al menos un producto al detalle');
+        setLoading(false);
+        return;
+    }
 
-        const payload = {
-            rut: rut,
-            detalles: detalles.map(item => ({
-                producto_id: item.producto_id,
-                cantidad_venta: item.cantidad_venta,
-                precio_unitario: item.precio_unitario
-            }))
-        };
-
-        try{
-            const response = await fetch('/api/sales',{
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(payload)
-            });
-
-            const data = await response.json();
-
-            if (!response.ok) {
-                throw new Error(data.error || 'Error al registrar la venta');
-            }
-
-            setSuccess('Venta Registrada con éxito');
-
-            setRut('');
-            setDetalles([]);
-            setCurrentProduct({
-                producto_id: '',
-                nombre: '',
-                cantidad_venta: 1,
-                precio_unitario: 0,
-                stockDisponible: 0
-            });
-        
-        } catch (error){
-            setError(error.message);
-        } finally {
-            setLoading(false)
-        }
+    const payload = {
+        rut: rut,
+        detalles: detalles.map(item => ({
+            producto_id: item.producto_id,
+            cantidad_venta: item.cantidad_venta,
+            precio_unitario: item.precio_unitario
+        }))
     };
 
+    try {
+        await saleService.createSales(payload);
 
-    return(
-        <>
-        <div className="CreateSales-Contenedor">
-            <h2>Registrar Nueva Venta</h2>
+        toast.success('¡Venta registrada con éxito!');
 
-            {error && <div className="error-message" style={{color: 'red', marginBottom: '10px'}}>{error}</div>}
-            {success && <div className="success-message" style={{ color: 'green', marginBottom: '10px' }}>{success}</div>}
-        
-            <form onSubmit={handleSubmit}>
-                <div>
-                    <label id="Rut">RUT Cliente:</label>
-                    <input 
-                    type="text"
-                    id="Rut"
-                    name="rut"
-                    onChange={(e) => setRut(e.target.value)}
-                    value={rut}
-                    placeholder="Ej: 12345678-9"
-                    required
-                    />
-                </div>
+        setRut('');
+        setDetalles([]);
+        setCurrentProduct({
+            producto_id: '',
+            nombre: '',
+            cantidad_venta: 1,
+            precio_unitario: 0,
+            stockDisponible: 0
+        });
 
-                <hr style={{margin: '20px 0', border: '1px solid #ccc'}}/>
-                <h3>Agregar Productos</h3>
+        if (onSaleCreated) onSaleCreated();
+        onClose();
 
-                <div>
-                    <label htmlFor="Producto">Producto:</label>
-                    <select
-                        id="Producto"
-                        name="producto_id"
-                        value={currentProduct.producto_id}
-                        onChange={handleProductChange}
-                    >
-                        <option value="">-- Selecciona un Producto --</option>
-                        {productos.map(p => (
-                            <option key={p.producto_id} value={p.producto_id}>
-                                {p.nombre} ({p.marca}) - Stock: {p.stock}
-                            </option>
-                        ))}
-                    </select>
-                </div>
+    } catch (error) {
+        toast.error(error.message || 'Error al registrar la venta');
+    } finally {
+        setLoading(false);
+    }
+    };
 
-                {currentProduct.producto_id && (
-                    <div style={{display: 'flex', gap: '15px', marginTop: '10px'}}>
-                        <div>
-                            <label>Precio Unitario:</label>
-                            <input 
-                                type="text" 
-                                value={`$${currentProduct.precio_unitario}`} 
-                                disabled 
-                            />
-                        </div>
-                        <div>
-                            <label htmlFor="Cantidad">Cantidad:</label>
-                            <input 
-                                type="number" 
-                                id="Cantidad"
-                                name="cantidad_venta"
-                                value={currentProduct.cantidad_venta}
-                                onChange={handleProductChange}
-                                min="1"
-                                max={currentProduct.stockDisponible}
-                            />
-                        </div>
-                        <button 
-                            type="button" 
-                            onClick={handleAddProduct}
-                            style={{alignSelf: 'flex-end', padding: '8px 15px'}}
+    return (
+        <div className="modal-overlay">
+            <div className="modal-content">
+                <form className="Formulario-Crear-Usuario" onSubmit={handleSubmit}>
+                    <h2>Registrar Nueva Venta</h2>
+
+                    <div className="Campo-Formulario-Usuario">
+                        <label htmlFor="Rut">RUT Cliente:</label>
+                        <input
+                            type="text"
+                            id="Rut"
+                            name="rut"
+                            onChange={(e) => setRut(e.target.value)}
+                            value={rut}
+                            placeholder="Ej: 12345678-9"
+                            required
+                        />
+                    </div>
+
+                    <hr style={{ margin: '20px 0', border: '1px solid #eee' }} />
+                    <h3>Agregar Productos</h3>
+
+                    <div className="Campo-Formulario-Usuario">
+                        <label htmlFor="Producto">Producto:</label>
+                        <select
+                            id="Producto"
+                            name="producto_id"
+                            value={currentProduct.producto_id}
+                            onChange={handleProductChange}
                         >
-                            Agregar al Detalle
+                            <option value="">-- Selecciona un Producto --</option>
+                            {productos.map(p => (
+                                <option key={p.producto_id} value={p.producto_id}>
+                                    {p.nombre} {p.marca ? `(${p.marca})` : ''} - Stock: {p.stock}
+                                </option>
+                            ))}
+                        </select>
+                    </div>
+
+                    {currentProduct.producto_id && (
+                        <div style={{ display: 'flex', gap: '15px', marginTop: '10px', alignItems: 'flex-end' }}>
+                            <div className="Campo-Formulario-Usuario" style={{ flex: 1 }}>
+                                <label>Precio Unitario:</label>
+                                <input
+                                    type="text"
+                                    value={`$${currentProduct.precio_unitario}`}
+                                    disabled
+                                />
+                            </div>
+                            <div className="Campo-Formulario-Usuario" style={{ flex: 1 }}>
+                                <label htmlFor="Cantidad">Cantidad:</label>
+                                <input
+                                    type="number"
+                                    id="Cantidad"
+                                    name="cantidad_venta"
+                                    value={currentProduct.cantidad_venta}
+                                    onChange={handleProductChange}
+                                    min="1"
+                                    max={currentProduct.stockDisponible}
+                                />
+                            </div>
+                            <button
+                                type="button"
+                                className="Boton-Guardar"
+                                onClick={handleAddProduct}
+                                style={{ marginBottom: '15px', height: '42px' }}
+                            >
+                                Agregar
+                            </button>
+                        </div>
+                    )}
+
+                    <hr style={{ margin: '20px 0', border: '1px solid #eee' }} />
+
+                    {detalles.length > 0 && (
+                        <div>
+                            <h3>Detalle de la Venta</h3>
+                            <table style={{ width: '100%', borderCollapse: 'collapse', marginBottom: '20px', textAlign: 'left' }}>
+                                <thead>
+                                    <tr style={{ borderBottom: '2px solid #ddd' }}>
+                                        <th>Producto</th>
+                                        <th>Cant.</th>
+                                        <th>Precio Unit.</th>
+                                        <th>Subtotal</th>
+                                        <th>Acción</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {detalles.map(item => (
+                                        <tr key={item.producto_id} style={{ borderBottom: '1px solid #eee' }}>
+                                            <td>{item.nombre}</td>
+                                            <td>{item.cantidad_venta}</td>
+                                            <td>${item.precio_unitario}</td>
+                                            <td>${item.cantidad_venta * item.precio_unitario}</td>
+                                            <td>
+                                                <button
+                                                    type="button"
+                                                    style={{ background: '#dc2626', color: 'white', padding: '4px 8px', border: 'none', borderRadius: '4px', cursor: 'pointer' }}
+                                                    onClick={() => handleRemoveProduct(item.producto_id)}
+                                                >
+                                                    Quitar
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    ))}
+                                </tbody>
+                            </table>
+                            <h4 style={{ textAlign: 'right', marginBottom: '15px' }}>
+                                Total General: ${calcularTotalGeneral()}
+                            </h4>
+                        </div>
+                    )}
+
+                    <div className="Botones-Modal">
+                        <button
+                            type="button"
+                            className="Boton-Cancelar"
+                            onClick={onClose}
+                            disabled={loading}
+                        >
+                            Cancelar
+                        </button>
+                        <button
+                            type="submit"
+                            className="Boton-Guardar"
+                            disabled={loading}
+                        >
+                            {loading ? 'Registrando...' : 'Confirmar Venta'}
                         </button>
                     </div>
-                )}
-
-                <hr style={{margin: '20px 0', border: '1px solid #ccc'}}/>
-
-                {detalles.length > 0 && (
-                    <div>
-                        <h3>Detalle de la Venta</h3>
-                        <table style={{width: '100%', borderCollapse: 'collapse', marginBottom: '20px', textAlign: 'left'}}>
-                            <thead>
-                                <tr style={{borderBottom: '2px solid #ddd'}}>
-                                    <th>Producto</th>
-                                    <th>Cantidad</th>
-                                    <th>Precio Unit.</th>
-                                    <th>Subtotal</th>
-                                    <th>Acción</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {detalles.map(item => (
-                                    <tr key={item.producto_id} style={{borderBottom: '1px solid #eee'}}>
-                                        <td>{item.nombre}</td>
-                                        <td>{item.cantidad_venta}</td>
-                                        <td>${item.precio_unitario}</td>
-                                        <td>${item.cantidad_venta * item.precio_unitario}</td>
-                                        <td>
-                                            <button 
-                                                type="button" 
-                                                style={{background: 'red', color: 'white', padding: '3px 8px', border: 'none', cursor: 'pointer'}} 
-                                                onClick={() => handleRemoveProduct(item.producto_id)}
-                                            >
-                                                Quitar
-                                            </button>
-                                        </td>
-                                    </tr>
-                                ))}
-                            </tbody>
-                        </table>
-                        <h4 style={{textAlign: 'right', marginRight: '10px'}}>
-                            Total General: ${calcularTotalGeneral()}
-                        </h4>
-                    </div>
-                )}
-
-                <button type="submit" disabled={loading} style={{marginTop: '15px', width: '100%'}}>
-                    {loading ? 'Registrando Venta...' : 'Confirmar y Registrar Venta'}
-                </button>
-
-            </form>
-        
+                </form>
+            </div>
         </div>
-        </>
-    )
-
+    );
 }
 
 export default CreateSales;
