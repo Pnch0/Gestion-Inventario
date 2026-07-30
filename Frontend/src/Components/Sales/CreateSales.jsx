@@ -3,7 +3,7 @@ import { saleService, productService } from "../../Services/api";
 import toast from 'react-hot-toast';
 
 function CreateSales({ isOpen, onClose, onSaleCreated }) {
-    const [rut, setRut] = useState('');
+    const [rutCliente, setRutCliente] = useState('');
     const [detalles, setDetalles] = useState([]);
     const [productos, setProductos] = useState([]);
 
@@ -17,6 +17,7 @@ function CreateSales({ isOpen, onClose, onSaleCreated }) {
 
     const [loading, setLoading] = useState(false);
 
+    // Cargar la lista de productos disponibles al abrir el modal
     useEffect(() => {
         if (!isOpen) return;
 
@@ -35,6 +36,7 @@ function CreateSales({ isOpen, onClose, onSaleCreated }) {
 
     if (!isOpen) return null;
 
+    // Manejar el cambio en el selector de productos y campos de cantidad
     const handleProductChange = (e) => {
         const { name, value, type } = e.target;
         const val = type === 'number' ? Number(value) : value;
@@ -66,6 +68,7 @@ function CreateSales({ isOpen, onClose, onSaleCreated }) {
         }
     };
 
+    // Agregar un producto a la lista temporal de detalles
     const handleAddProduct = (e) => {
         e.preventDefault();
 
@@ -75,7 +78,7 @@ function CreateSales({ isOpen, onClose, onSaleCreated }) {
         }
 
         if (currentProduct.cantidad_venta <= 0) {
-            toast.error('La cantidad de venta debe ser mayor a 0.');
+            toast.error('La cantidad debe ser mayor a 0.');
             return;
         }
 
@@ -90,7 +93,7 @@ function CreateSales({ isOpen, onClose, onSaleCreated }) {
             const nuevaCantidad = nuevosDetalles[existeIndex].cantidad_venta + currentProduct.cantidad_venta;
 
             if (nuevaCantidad > currentProduct.stockDisponible) {
-                toast.error(`No puedes agregar más de ${currentProduct.stockDisponible} unidades.`);
+                toast.error(`No puedes agregar más de ${currentProduct.stockDisponible} unidades de este producto.`);
                 return;
             }
 
@@ -108,6 +111,7 @@ function CreateSales({ isOpen, onClose, onSaleCreated }) {
             ]);
         }
 
+        // Limpiar selector del producto actual
         setCurrentProduct({
             producto_id: '',
             nombre: '',
@@ -117,62 +121,82 @@ function CreateSales({ isOpen, onClose, onSaleCreated }) {
         });
     };
 
+    // Eliminar un producto de la lista temporal
     const handleRemoveProduct = (id) => {
         setDetalles(detalles.filter(item => item.producto_id !== id));
     };
 
+    // Calcular el total general dinámicamente
     const calcularTotalGeneral = () => {
         return detalles.reduce((sum, item) => sum + (item.cantidad_venta * item.precio_unitario), 0);
     };
 
+    // Enviar el formulario para registrar la venta
     const handleSubmit = async (e) => {
-    e.preventDefault();
-    setLoading(true);
+        e.preventDefault();
+        setLoading(true);
 
-    if (!rut) {
-        toast.error('El RUT del cliente es obligatorio');
-        setLoading(false);
-        return;
-    }
+        // 1. Obtener el usuario logueado desde localStorage
+        const rawUsuario = localStorage.getItem('usuario');
+        const usuarioLogueado = rawUsuario ? JSON.parse(rawUsuario) : {};
 
-    if (detalles.length === 0) {
-        toast.error('Debes agregar al menos un producto al detalle');
-        setLoading(false);
-        return;
-    }
+        // Búsqueda del RUT (ahora revisa la propiedad 'perfil' que viene en tu localStorage)
+        const rutTrabajador = 
+            usuarioLogueado.perfil?.rut ||           // <--- AQUÍ ES DONDE ESTÁ EN TU CASO
+            usuarioLogueado.rut || 
+            usuarioLogueado.rut_vendedor || 
+            usuarioLogueado.rut_usuario || 
+            usuarioLogueado.usuario?.rut || 
+            usuarioLogueado.id;                     // Fallback al ID de usuario de Supabase
 
-    const payload = {
-        rut: rut,
-        detalles: detalles.map(item => ({
-            producto_id: item.producto_id,
-            cantidad_venta: item.cantidad_venta,
-            precio_unitario: item.precio_unitario
-        }))
-    };
+        if (!rutTrabajador) {
+            console.error("No se encontró RUT ni ID en localStorage:", usuarioLogueado);
+            toast.error('No se detectó un usuario/vendedor activo. Por favor, vuelve a iniciar sesión.');
+            setLoading(false);
+            return;
+        }
 
-    try {
-        await saleService.createSales(payload);
+        if (detalles.length === 0) {
+            toast.error('Debes agregar al menos un producto a la lista.');
+            setLoading(false);
+            return;
+        }
 
-        toast.success('¡Venta registrada con éxito!');
+        // 2. Armar el payload a enviar al backend
+        const payload = {
+            rut_vendedor: rutTrabajador,
+            rut_cliente: rutCliente,
+            detalles: detalles.map(item => ({
+                producto_id: item.producto_id,
+                cantidad_venta: item.cantidad_venta,
+                precio_unitario: item.precio_unitario
+            }))
+        };
 
-        setRut('');
-        setDetalles([]);
-        setCurrentProduct({
-            producto_id: '',
-            nombre: '',
-            cantidad_venta: 1,
-            precio_unitario: 0,
-            stockDisponible: 0
-        });
+        try {
+            await saleService.createSales(payload);
+            toast.success('¡Venta registrada con éxito!');
 
-        if (onSaleCreated) onSaleCreated();
-        onClose();
+            // Limpiar formulario y cerrar modal
+            setRutCliente('');
+            setDetalles([]);
+            setCurrentProduct({
+                producto_id: '',
+                nombre: '',
+                cantidad_venta: 1,
+                precio_unitario: 0,
+                stockDisponible: 0
+            });
 
-    } catch (error) {
-        toast.error(error.message || 'Error al registrar la venta');
-    } finally {
-        setLoading(false);
-    }
+            if (onSaleCreated) onSaleCreated();
+            onClose();
+
+        } catch (error) {
+            console.error("Error al registrar venta:", error);
+            toast.error(error.message || 'Error al registrar la venta');
+        } finally {
+            setLoading(false);
+        }
     };
 
     return (
@@ -182,15 +206,14 @@ function CreateSales({ isOpen, onClose, onSaleCreated }) {
                     <h2>Registrar Nueva Venta</h2>
 
                     <div className="Campo-Formulario-Usuario">
-                        <label htmlFor="Rut">RUT Cliente:</label>
+                        <label htmlFor="RutCliente">RUT del Cliente:</label>
                         <input
                             type="text"
-                            id="Rut"
-                            name="rut"
-                            onChange={(e) => setRut(e.target.value)}
-                            value={rut}
-                            placeholder="Ej: 12345678-9"
-                            required
+                            id="RutCliente"
+                            name="rutCliente"
+                            onChange={(e) => setRutCliente(e.target.value)}
+                            value={rutCliente}
+                            placeholder="Ej: 12.345.678-9 (Opcional)"
                         />
                     </div>
 
