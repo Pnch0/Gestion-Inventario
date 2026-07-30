@@ -53,7 +53,7 @@ function SalesPage(){
                         <li>Nombre Vendedor</li>
                         <li>Producto Vendido</li>
                         <li>Cantidad</li>
-                        <li>Unidad de Venta</li>
+                        <li>Categoria</li>
                         <li>Total Venta</li>
                     </ul>
                 </div>

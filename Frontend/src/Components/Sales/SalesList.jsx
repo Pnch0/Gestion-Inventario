@@ -8,10 +8,6 @@ function SalesList({ refreshTrigger }) {
     const [sales, setSales] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState('');
-    const [editTarget, setEditTarget] = useState(null);
-    const [enviando, setEnviando] = useState(false);
-    const [mostrarConfirmacion, setMostrarConfirmacion] = useState(false);
-    const [ventaSeleccionadaId, setVentaSeleccionadaId] = useState(null);
 
     const toastStyles = {
         exito: {
@@ -47,37 +43,6 @@ function SalesList({ refreshTrigger }) {
         fetchSales();
     }, [refreshTrigger]);
 
-    const ejecutarEliminacion = async () => {
-        if (!ventaSeleccionadaId) return;
-        setMostrarConfirmacion(false);
-
-        try {
-            await saleService.deleteSale(ventaSeleccionadaId);
-            setSales(sales.filter(sale => sale.id_venta !== ventaSeleccionadaId));
-            toast.success('La venta ha sido eliminada con éxito.', toastStyles.exito);
-        } catch (err) {
-            toast.error(err.message || 'No se pudo eliminar la venta.', toastStyles.error);
-        } finally {
-            setVentaSeleccionadaId(null);
-        }
-    };
-
-    const handleAction = async (e) => {
-        e.preventDefault();
-        setEnviando(true);
-
-        try {
-            await saleService.updateSale(editTarget.id_venta, editTarget);
-            setEditTarget(null);
-            toast.success('¡La venta se ha actualizado correctamente!', toastStyles.exito);
-            fetchSales();
-        } catch (err) {
-            toast.error(err.message || 'No se pudieron guardar los cambios.', toastStyles.error);
-        } finally {
-            setEnviando(false);
-        }
-    };
-
     const formatDate = (dateString) => {
         if (!dateString) return '';
         const options = { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit' };
@@ -93,58 +58,57 @@ function SalesList({ refreshTrigger }) {
     if (error) return <div style={{ color: 'red', padding: '20px', textAlign: 'center' }}>Error al obtener ventas: {error}</div>;
 
     return (
-        <>
-            <div className="SalesList-Contenedor">
-                {sales.length === 0 ? (
-                    <p style={{ textAlign: 'center', padding: '20px' }}>No hay ventas registradas</p>
-                ) : (
-                    <ul className="ListaDatos-Ventas">
-                        {sales.map((sale) => {
-                            const nombreVendedor = sale.Usuarios 
-                                ? `${sale.Usuarios.nombre || ''} ${sale.Usuarios.apellido || ''}`.trim() 
-                                : (sale.rut || 'Vendedor Desconocido');
+        <div className="SalesList-Contenedor">
+            {sales.length === 0 ? (
+                <p style={{ textAlign: 'center', padding: '20px' }}>No hay ventas registradas</p>
+            ) : (
+                <ul className="ListaDatos-Ventas">
+                    {sales.map((sale) => {
 
-                            const detalles = sale.Detalle_Venta || [];
+                        const nombreVendedor = sale.Usuarios && (sale.Usuarios.nombre || sale.Usuarios.apellido)
+                            ? `${sale.Usuarios.nombre || ''} ${sale.Usuarios.apellido || ''}`.trim() 
+                            : 'Vendedor sin registrar';
 
-                            if (detalles.length === 0) {
-                                return (
-                                    <li key={sale.id_venta} className="Fila-Ventas">
-                                        <span>{formatDate(sale.fecha_hora)}</span>
-                                        <span>{nombreVendedor}</span>
-                                        <span>Sin productos</span>
-                                        <span>0</span>
-                                        <span>Unidad</span>
-                                        <span>${sale.total_general}</span>
-                                        <span>$0</span>
-                                    </li>
-                                );
-                            }
+                        const detalles = sale.Detalle_Venta || [];
 
-                            return detalles.map((detalle, index) => {
-                                const producto = detalle.Productos || {};
-                                const cantidad = detalle.cantidad_venta || 0;
-                                const totalLineaVenta = detalle.total_linea || (cantidad * detalle.precio_unitario);
-                                
-                                const precioCosto = producto.precio_costo || producto.precio_compra || 0;
-                                const totalLineaCompra = cantidad * precioCosto;
+                        if (detalles.length === 0) {
+                            return (
+                                <li key={sale.id_venta} className="Fila-Ventas">
+                                    <span>{formatDate(sale.fecha_hora)}</span>
+                                    <span>{nombreVendedor}</span>
+                                    <span>Sin productos</span>
+                                    <span>0</span>
+                                    <span>Sin Categoría</span>
+                                    <span>${Number(sale.total_general || 0).toLocaleString('es-CL')}</span>
+                                </li>
+                            );
+                        }
 
-                                return (
-                                    <li key={`${sale.id_venta}-${detalle.id_detalle || index}`} className="Fila-Ventas">
-                                        <span>{formatDate(sale.fecha_hora)}</span>
-                                        <span>{nombreVendedor}</span>
-                                        <span>{producto.nombre || 'Producto Desconocido'}</span>
-                                        <span>{cantidad}</span>
-                                        <span>{producto.unidad_medida || 'Unidad'}</span>
-                                        <span>${Number(totalLineaVenta).toLocaleString('es-CL')}</span>
-                                    </li>
-                                );
-                            });
-                        })}
-                    </ul>
-                )}
-            </div>
-            
-        </>
+                        return detalles.map((detalle, index) => {
+                            const producto = detalle.Productos || {};
+                            const cantidad = detalle.cantidad_venta || 0;
+                            const totalLineaVenta = detalle.total_linea || (cantidad * detalle.precio_unitario);
+                            
+                            const categoriaNombre = 
+                                producto.categoria || 
+                                producto.Categorias?.nombre_categoria || 
+                                'Sin Categoría';
+
+                            return (
+                                <li key={`${sale.id_venta}-${detalle.id_detalle || index}`} className="Fila-Ventas">
+                                    <span>{formatDate(sale.fecha_hora)}</span>
+                                    <span>{nombreVendedor}</span>
+                                    <span>{producto.nombre || 'Producto Desconocido'}</span>
+                                    <span>{cantidad}</span>
+                                    <span>{categoriaNombre}</span>
+                                    <span>${Number(totalLineaVenta).toLocaleString('es-CL')}</span>
+                                </li>
+                            );
+                        });
+                    })}
+                </ul>
+            )}
+        </div>
     );
 }
 

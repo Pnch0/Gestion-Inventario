@@ -80,58 +80,69 @@ export const CreateSale = async (req, res) => {
 
 export const GetSale = async (req, res) => {
   try {
-      // 1. Obtener todas las ventas
-      const { data: ventas, error: errorVentas } = await supabase
+      const db = supabaseAdmin || supabase;
+
+      const { data: ventas, error: errorVentas } = await db
           .from('Ventas')
           .select('id_venta, fecha_hora, total_general, rut')
           .order('fecha_hora', { ascending: false });
 
-      if (errorVentas) {
-          console.error("Error al obtener Ventas:", errorVentas);
-          throw new Error(errorVentas.message);
-      }
+      if (errorVentas) throw new Error(errorVentas.message);
+      if (!ventas || ventas.length === 0) return res.json([]);
 
-      if (!ventas || ventas.length === 0) {
-          return res.json([]);
-      }
-
-      // 2. Obtener todos los usuarios/vendedores para cruzarlos manualmente por RUT
-      const { data: usuarios } = await supabase
-          .from('Usuarios')
+      const { data: usuarios } = await db
+          .from('Usuario')
           .select('rut, nombre, apellido');
 
-      // Crear un mapa para búsqueda rápida de vendedores por RUT
+      const idsVenta = ventas.map(v => v.id_venta);
+      const { data: detalles, error: errorDetalles } = await db
+          .from('Detalle_Venta')
+          .select('*')
+          .in('id_venta', idsVenta);
+
+      if (errorDetalles) console.error("Error en Detalle_Venta:", errorDetalles);
+
+      let productosMap = {};
+
+      if (detalles && detalles.length > 0) {
+          const idsProductos = [...new Set(detalles.map(d => d.producto_id || d.id_producto))].filter(Boolean);
+
+          const { data: productos, error: errorProductos } = await db
+              .from('Productos')
+              .select('*')
+              .in('producto_id', idsProductos);
+
+          if (errorProductos) {
+              console.error("Error al obtener Productos:", errorProductos);
+          } else if (productos) {
+              productosMap = productos.reduce((acc, p) => {
+                  acc[p.producto_id] = {
+                      ...p,
+                      Categorias: {
+                          nombre_categoria: p.categoria || 'Sin Categoría'
+                      }
+                  };
+                  return acc;
+              }, {});
+          }
+      }
+
+      const limpiarRut = (r) => String(r || '').replace(/[^0-9kK]/g, '').toLowerCase();
+
       const mapaUsuarios = (usuarios || []).reduce((acc, u) => {
-          acc[u.rut] = u;
+          if (u.rut) acc[limpiarRut(u.rut)] = u;
           return acc;
       }, {});
 
-      // 3. Obtener todos los detalles de venta con sus respectivos productos
-      const idsVenta = ventas.map(v => v.id_venta);
-      const { data: detalles, error: errorDetalles } = await supabase
-          .from('Detalle_Venta')
-          .select(`
-              id_detalle,
-              id_venta,
-              producto_id,
-              cantidad_venta,
-              precio_unitario,
-              total_linea,
-              Productos (
-                  nombre,
-                  stock
-              )
-          `)
-          .in('id_venta', idsVenta);
-
-      if (errorDetalles) {
-          console.error("Error al obtener Detalle_Venta:", errorDetalles);
-      }
-
-      // 4. Armar el objeto final unificando ventas, vendedores y detalles
       const ventasCompletas = ventas.map(venta => {
-          const usuarioEncontrado = mapaUsuarios[venta.rut];
-          const detallesDeEstaVenta = (detalles || []).filter(d => d.id_venta === venta.id_venta);
+          const usuarioEncontrado = mapaUsuarios[limpiarRut(venta.rut)];
+
+          const detallesDeEstaVenta = (detalles || [])
+              .filter(d => Number(d.id_venta) === Number(venta.id_venta))
+              .map(d => ({
+                  ...d,
+                  Productos: productosMap[d.producto_id] || null
+              }));
 
           return {
               ...venta,
@@ -146,10 +157,11 @@ export const GetSale = async (req, res) => {
       return res.json(ventasCompletas);
 
   } catch (error) {
-      console.error("Error detallado en GetSale:", error);
+      console.error("Error en GetSale:", error);
       res.status(500).json({ error: "Error al obtener las ventas", detalle: error.message });
   }
 };
+
 
 export const GetSaleDetail = async(req , res) =>{
     const { id } = req.params;
