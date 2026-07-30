@@ -4,26 +4,25 @@ body {
     margin: 0;
     min-height: 100vh;
     background-color: #f2f7ec;
-
 }
 
 #root {
     width: 100%;
     min-height: 100vh;
     display: block;
-    
 }
 
-.Contenedor-ListProducts{
+.Contenedor-ListProducts {
     width: 100%;
     height: auto;
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 50px;
+    gap: 30px;
+    padding-bottom: 40px;
 }
 
-.ContenedorSuperior-ListProducts{
+.ContenedorSuperior-ListProducts {
     width: 100%;
     height: 13dvh;
     display: flex;
@@ -34,8 +33,7 @@ body {
     margin-right: 80px;
 }
 
-
-.ContenedorSuperior-ListProducts .Boton-Funcion{
+.ContenedorSuperior-ListProducts .Boton-Funcion {
     background-color: #3da35d;
     padding: 15px 25px;
     border-radius: 8px;
@@ -45,28 +43,30 @@ body {
     font-size: 16px;
 }
 
-.ContenedorSuperior-ListProducts .Boton-Producto{
+.ContenedorSuperior-ListProducts .Boton-Producto {
     background-color: transparent;
     border: none;
     cursor: pointer;
 }
 
-.Boton-Producto .Icono-Perfil{
+.Boton-Producto .Icono-Perfil {
     font-size: 45px;
     color: #3da35d;
 }
 
-.ContenedorListado-ListadoProductos{
+/* --- TARJETA CONTENEDORA DE LA TABLA --- */
+.ContenedorListado-ListadoProductos {
     width: 90%;
-    height: 75dvh;
+    height: 75dvh; /* Alto fijo del contenedor general */
     background-color: #FFF;
     border-radius: 12px;
     box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
     display: flex;
     flex-direction: column;
+    overflow: hidden; /* ¡CLAVE! Evita que todo lo de adentro se salga */
 }
 
-.ContenedorSuperior-ListadoProductos{
+.ContenedorSuperior-ListadoProductos {
     width: 100%;
     height: 12dvh;
     background-color: #3da35d;
@@ -74,9 +74,10 @@ body {
     display: flex;
     flex-direction: row;
     align-items: center;
+    flex-shrink: 0; /* Evita que la cabecera verde se encoja */
 }
 
-.ContenedorSuperior-IzquierdaProductos{
+.ContenedorSuperior-IzquierdaProductos {
     width: 30%;
     height: 12dvh;
     border-radius: 12px 0px 0px 0px;
@@ -84,13 +85,12 @@ body {
     align-items: center;
 }
 
-.ContenedorSuperior-IzquierdaProductos h2{
+.ContenedorSuperior-IzquierdaProductos h2 {
     color: #FFF;
     padding: 20px;
 }
 
-
-.ContenedorSuperior-DerechaProductos{
+.ContenedorSuperior-DerechaProductos {
     width: 70%;
     height: 12dvh;
     border-radius: 0px 12px 0px 0px;
@@ -102,35 +102,35 @@ body {
 }
 
 .Buscador-Productos {
-  position: relative;
-  display: inline-flex;
-  align-items: center;
+    position: relative;
+    display: inline-flex;
+    align-items: center;
 }
 
 .Buscador-Productos .Icono-Buscador {
-  position: absolute;
-  left: 12px;
-  color: #3da35d;
-  font-size: 16px;
-  pointer-events: none;
+    position: absolute;
+    left: 12px;
+    color: #3da35d;
+    font-size: 16px;
+    pointer-events: none;
 }
 
 .Buscador-Productos input {
-  padding: 10px 15px 10px 38px;
-  border-radius: 6px;
-  border: 1px solid transparent;
-  color: #333;
-  font-size: 14px;
-  outline: none;
-  width: 220px;
-  transition: border-color 0.2s ease;
+    padding: 10px 15px 10px 38px;
+    border-radius: 6px;
+    border: 1px solid transparent;
+    color: #333;
+    font-size: 14px;
+    outline: none;
+    width: 220px;
+    transition: border-color 0.2s ease;
 }
 
 .Buscador-Productos input:focus {
-  border-color: #2b7a44;
+    border-color: #2b7a44;
 }
 
-.ContenedorSuperior-DerechaProductos .Select-FiltroProductos{
+.ContenedorSuperior-DerechaProductos .Select-FiltroProductos {
     padding: 10px 15px 10px 10px;
     border-radius: 6px;
     border: 1px solid transparent;
@@ -141,19 +141,19 @@ body {
     transition: border-color 0.2s ease;
 }
 
-.Select-FiltroProductos select:focus{
+.Select-FiltroProductos select:focus {
     border-color: #2b7a44;
 }
 
 
-.ContenedorEncabezado-ListadoProductos{
+.ContenedorEncabezado-ListadoProductos {
     width: 100%;
     height: 13dvh;
     display: flex;
     flex-direction: row;
     align-items: center;
     border-bottom: 1px solid #96e072;
-
+    flex-shrink: 0;
 }
 
 .ContenedorEncabezado-ListadoProductos ul {
@@ -174,6 +174,13 @@ body {
     padding: 10px 0;
 }
 
+.Contenedor-ListadoProductos,
+.ProductList-Contenedor {
+    width: 100%;
+    flex: 1;
+    overflow-y: auto;
+}
+
 .ListaDatos-Productos {
     width: 100%;
     padding: 0;
@@ -186,7 +193,7 @@ body {
     list-style: none;
     width: 100%;
     display: grid;
-    grid-template-columns: repeat(7, 1fr); 
+    grid-template-columns: repeat(7, 1fr);
     align-items: center;
     padding: 10px 0;
     border-bottom: 1px solid #96e072;
@@ -214,14 +221,14 @@ body {
     gap: 12px;
 }
 
-.Acciones-Botones button{
+.Acciones-Botones button {
     background-color: transparent;
     border: none;
     outline: none;
     cursor: pointer;
 }
 
-.Acciones-Botones .Icono-Acciones{
+.Acciones-Botones .Icono-Acciones {
     font-size: 30px;
     color: #2b7a44;
 }
@@ -234,11 +241,10 @@ body {
     justify-content: center;
 }
 
-
 .Imagen-Producto-Tabla {
     width: 145px;
     height: 145px;
-    object-fit: cover;
+    object-fit: contain;
     border-radius: 6px;
     border: 1px solid #e0e0e0;
 }
@@ -265,7 +271,6 @@ body {
     border-radius: 12px;
 }
 
-
 .Boton-Cerrar-Modal {
     position: absolute;
     top: 16px;
@@ -291,7 +296,6 @@ body {
     background-color: #f3f4f6;
 }
 
-
 .Detalle-Imagen-Superior {
     width: 100%;
     height: 280px;
@@ -310,7 +314,6 @@ body {
     object-fit: contain;
     padding: 12px;
 }
-
 
 .Detalle-Producto-Columna {
     display: flex;
