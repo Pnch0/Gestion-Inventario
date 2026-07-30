@@ -54,8 +54,7 @@ function SalesPage(){
                         <li>Producto Vendido</li>
                         <li>Cantidad</li>
                         <li>Unidad de Venta</li>
-                        <li>Total de la linea de Compra</li>
-                        <li>Total de la linea de Venta</li>
+                        <li>Total Venta</li>
                     </ul>
                 </div>
 

@@ -156,7 +156,7 @@ body {
     padding: 0;
     margin: 0;
     display: grid;
-    grid-template-columns: repeat(7, 1fr);
+    grid-template-columns: repeat(6, 1fr);
     align-items: center;
     list-style: none;
 }
@@ -185,9 +185,9 @@ body {
     list-style: none;
     width: 100%;
     display: grid;
-    grid-template-columns: repeat(7, 1fr); 
+    grid-template-columns: repeat(6, 1fr); 
     align-items: center;
-    padding: 10px 0;
+    padding: 45px 0;
     border-bottom: 1px solid #96e072;
     box-sizing: border-box;
 }
@@ -206,21 +206,3 @@ body {
     word-break: break-word;
 }
 
-.Acciones-Botones {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 12px;
-}
-
-.Acciones-Botones button{
-    background-color: transparent;
-    border: none;
-    outline: none;
-    cursor: pointer;
-}
-
-.Acciones-Botones .Icono-Acciones{
-    font-size: 30px;
-    color: #2b7a44;
-}

@@ -80,30 +80,73 @@ export const CreateSale = async (req, res) => {
 
 export const GetSale = async (req, res) => {
   try {
-      const { data: ventas, error } = await supabase
+      // 1. Obtener todas las ventas
+      const { data: ventas, error: errorVentas } = await supabase
           .from('Ventas')
-          .select(`
-              id_venta,
-              fecha_hora,
-              total_general,
-              rut,
-              Detalle_Venta (
-                  id_detalle,
-                  producto_id,
-                  cantidad_venta,
-                  precio_unitario,
-                  total_linea
-              )
-          `)
+          .select('id_venta, fecha_hora, total_general, rut')
           .order('fecha_hora', { ascending: false });
 
-      if (error) {
-          throw new Error(error.message);
+      if (errorVentas) {
+          console.error("Error al obtener Ventas:", errorVentas);
+          throw new Error(errorVentas.message);
       }
 
-      res.json(ventas);
+      if (!ventas || ventas.length === 0) {
+          return res.json([]);
+      }
+
+      // 2. Obtener todos los usuarios/vendedores para cruzarlos manualmente por RUT
+      const { data: usuarios } = await supabase
+          .from('Usuarios')
+          .select('rut, nombre, apellido');
+
+      // Crear un mapa para búsqueda rápida de vendedores por RUT
+      const mapaUsuarios = (usuarios || []).reduce((acc, u) => {
+          acc[u.rut] = u;
+          return acc;
+      }, {});
+
+      // 3. Obtener todos los detalles de venta con sus respectivos productos
+      const idsVenta = ventas.map(v => v.id_venta);
+      const { data: detalles, error: errorDetalles } = await supabase
+          .from('Detalle_Venta')
+          .select(`
+              id_detalle,
+              id_venta,
+              producto_id,
+              cantidad_venta,
+              precio_unitario,
+              total_linea,
+              Productos (
+                  nombre,
+                  stock
+              )
+          `)
+          .in('id_venta', idsVenta);
+
+      if (errorDetalles) {
+          console.error("Error al obtener Detalle_Venta:", errorDetalles);
+      }
+
+      // 4. Armar el objeto final unificando ventas, vendedores y detalles
+      const ventasCompletas = ventas.map(venta => {
+          const usuarioEncontrado = mapaUsuarios[venta.rut];
+          const detallesDeEstaVenta = (detalles || []).filter(d => d.id_venta === venta.id_venta);
+
+          return {
+              ...venta,
+              Usuarios: usuarioEncontrado ? {
+                  nombre: usuarioEncontrado.nombre,
+                  apellido: usuarioEncontrado.apellido
+              } : null,
+              Detalle_Venta: detallesDeEstaVenta
+          };
+      });
+
+      return res.json(ventasCompletas);
 
   } catch (error) {
+      console.error("Error detallado en GetSale:", error);
       res.status(500).json({ error: "Error al obtener las ventas", detalle: error.message });
   }
 };
