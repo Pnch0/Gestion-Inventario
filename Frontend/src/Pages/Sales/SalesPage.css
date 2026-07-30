@@ -206,3 +206,331 @@ body {
     word-break: break-word;
 }
 
+/* MEDIA QUERIES */
+@media screen and (max-width: 768px) {
+  html, body {
+    height: 100%;
+    overflow: hidden;
+  }
+
+  #root {
+    height: 100%;
+    overflow: hidden;
+  }
+
+  .Contenedor-SalesPage {
+    gap: 0;
+    height: 100dvh;
+    max-height: 100dvh;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 10px;
+    padding-bottom: 75px;
+    box-sizing: border-box;
+    overflow: hidden;
+  }
+
+  .ContenedorSuperior-SalesPage {
+    width: 92%;
+    height: auto;
+    flex-direction: row;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 15px;
+    margin-right: 0;
+    padding: 0;
+    box-sizing: border-box;
+    flex-shrink: 0;
+  }
+
+  .ContenedorSuperior-SalesPage .Boton-Funcion {
+    padding: 10px 16px;
+    font-size: 14px;
+  }
+
+  .ContenedorListado-Ventas {
+    width: 92%;
+    height: auto;
+    max-height: calc(100dvh - 160px);
+    margin: auto 0;
+    overflow: hidden;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+    display: flex;
+    flex-direction: column;
+  }
+
+  .ContenedorSuperior-ListadoVentas {
+    flex-direction: column;
+    height: auto;
+    padding: 12px 15px;
+    gap: 10px;
+    border-radius: 12px 12px 0 0;
+    box-sizing: border-box;
+    flex-shrink: 0;
+  }
+
+  .ContenedorSuperior-IzquierdaVentas,
+  .ContenedorSuperior-DerechaVentas {
+    width: 100%;
+    height: auto;
+    justify-content: center;
+    margin-right: 0;
+    box-sizing: border-box;
+  }
+
+  .ContenedorSuperior-DerechaVentas {
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .Buscador-Ventas,
+  .ContenedorSuperior-DerechaVentas .Select-FiltroVentas {
+    width: 100% !important;
+    max-width: 100%;
+    box-sizing: border-box;
+  }
+
+  .Buscador-Ventas input,
+  .ContenedorSuperior-DerechaVentas .Select-FiltroVentas {
+    width: 100% !important;
+    max-width: 100%;
+    box-sizing: border-box;
+  }
+
+  .ContenedorEncabezado-ListadoVentas {
+    display: none;
+  }
+
+  /* Scroll vertical para el listado */
+  .Contenedor-ListadoVentas,
+  .ListaDatos-Ventas {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding: 10px;
+    gap: 15px;
+    box-sizing: border-box;
+    background-color: #f4f8f1;
+  }
+
+  /* Layout principal de cada Venta */
+  .Fila-Ventas {
+    display: grid !important;
+    grid-template-columns: 110px 1fr !important;
+    grid-template-rows: repeat(6, minmax(28px, auto)) !important;
+    width: 100%;
+    background-color: #ffffff;
+    border-radius: 10px;
+    border: 1px solid #dbead5;
+    padding: 0px !important;
+    box-sizing: border-box;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+  }
+
+
+
+  /* Etiquetas fijas a la izquierda ocupando las 6 filas */
+  .Fila-Ventas::before {
+    content: "Fecha y Hora\a Vendedor\a Producto\a Cantidad\a Categoría\a Total Venta";
+    white-space: pre-line;
+    font-weight: bold;
+    color: #3da35d;
+    font-size: 13px;
+    line-height: 2.2;
+    padding: 0 10px;
+    background-color: #f4f8f1;
+    border-right: 1px solid #dbead5;
+    text-align: left;
+    grid-column: 1;
+    grid-row: 1 / span 6;
+    display: block;
+    box-sizing: border-box;
+  }
+
+  /* Cada dato se coloca automáticamente en la columna 2, uno bajo otro */
+  .Fila-Ventas span {
+    grid-column: 2;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    text-align: center;
+    font-size: 13px;
+    line-height: 1.2;
+    padding: 2px 5px;
+    color: #2b7a44;
+    box-sizing: border-box;
+    word-break: break-word;
+  }
+}
+
+
+/* PANTALLAS MEDIANAS (TABLETS / LAPTOPS PEQUEÑAS) */
+@media screen and (max-width: 1200px) {
+  html, body {
+    height: 100%;
+    overflow: hidden;
+  }
+
+  #root {
+    height: 100%;
+    overflow: hidden;
+  }
+
+  .Contenedor-SalesPage {
+    gap: 0;
+    height: 100dvh;
+    max-height: 100dvh;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 10px;
+    padding-bottom: 75px;
+    box-sizing: border-box;
+    overflow: hidden;
+  }
+
+  .ContenedorSuperior-SalesPage {
+    width: 92%;
+    max-width: 700px;
+    height: auto;
+    flex-direction: row;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 15px;
+    margin-right: 0;
+    padding: 0;
+    box-sizing: border-box;
+    flex-shrink: 0;
+  }
+
+  .ContenedorSuperior-SalesPage .Boton-Funcion {
+    padding: 12px 18px;
+    font-size: 15px;
+  }
+
+  .ContenedorListado-Ventas {
+    width: 92%;
+    max-width: 700px;
+    height: auto;
+    max-height: calc(100dvh - 160px);
+    margin: auto 0;
+    overflow: hidden;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+    display: flex;
+    flex-direction: column;
+  }
+
+  .ContenedorSuperior-ListadoVentas {
+    flex-direction: column;
+    height: auto;
+    padding: 14px 15px;
+    gap: 10px;
+    border-radius: 12px 12px 0 0;
+    box-sizing: border-box;
+    flex-shrink: 0;
+  }
+
+  .ContenedorSuperior-IzquierdaVentas,
+  .ContenedorSuperior-DerechaVentas {
+    width: 100%;
+    height: auto;
+    justify-content: center;
+    margin-right: 0;
+    box-sizing: border-box;
+  }
+
+  .ContenedorSuperior-DerechaVentas {
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .Buscador-Ventas,
+  .ContenedorSuperior-DerechaVentas .Select-FiltroVentas {
+    width: 100% !important;
+    max-width: 100%;
+    box-sizing: border-box;
+  }
+
+  .Buscador-Ventas input,
+  .Select-FiltroVentas select,
+  .ContenedorSuperior-DerechaVentas select {
+    width: 100% !important;
+    max-width: 100%;
+    box-sizing: border-box;
+    font-size: 15px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+  }
+
+  .ContenedorEncabezado-ListadoVentas {
+    display: none;
+  }
+
+  .Contenedor-ListadoVentas,
+  .ListaDatos-Ventas {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding: 12px;
+    gap: 16px;
+    box-sizing: border-box;
+    background-color: #f4f8f1;
+  }
+
+  .Fila-Ventas {
+    display: grid !important;
+    grid-template-columns: 120px 1fr !important;
+    grid-template-rows: repeat(6, minmax(32px, auto)) !important;
+    width: 100%;
+    background-color: #ffffff;
+    border-radius: 10px;
+    border: 1px solid #dbead5;
+    padding: 0px !important;
+    box-sizing: border-box;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+  }
+
+  .Fila-Ventas::before {
+    content: "Fecha y Hora\a Vendedor\a Producto\a Cantidad\a Categoría\a Total Venta";
+    white-space: pre-line;
+    font-weight: bold;
+    color: #3da35d;
+    font-size: 14px;
+    line-height: 2.4;
+    padding: 0 10px;
+    background-color: #f4f8f1;
+    border-right: 1px solid #dbead5;
+    text-align: left;
+    grid-column: 1;
+    grid-row: 1 / span 6;
+    display: block;
+    box-sizing: border-box;
+  }
+
+  .Fila-Ventas span {
+    grid-column: 2;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    text-align: center;
+    font-size: 14px;
+    line-height: 1.2;
+    padding: 2px 5px;
+    color: #2b7a44;
+    box-sizing: border-box;
+    word-break: break-word;
+  }
+}
