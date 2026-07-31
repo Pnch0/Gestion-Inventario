@@ -4,26 +4,25 @@ body {
     margin: 0;
     min-height: 100vh;
     background-color: #f2f7ec;
-
 }
 
 #root {
     width: 100%;
     min-height: 100vh;
     display: block;
-    
 }
 
-.Contenedor-SalesPage{
+.Contenedor-SalesPage {
     width: 100%;
     height: auto;
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 50px;
+    gap: 30px;
+    padding-bottom: 40px;
 }
 
-.ContenedorSuperior-SalesPage{
+.ContenedorSuperior-SalesPage {
     width: 100%;
     height: 13dvh;
     display: flex;
@@ -34,7 +33,7 @@ body {
     margin-right: 80px;
 }
 
-.ContenedorSuperior-SalesPage .Boton-Funcion{
+.ContenedorSuperior-SalesPage .Boton-Funcion {
     background-color: #3da35d;
     padding: 15px 25px;
     border-radius: 8px;
@@ -44,18 +43,18 @@ body {
     font-size: 16px;
 }
 
-.ContenedorSuperior-SalesPage .Boton-Venta{
+.ContenedorSuperior-SalesPage .Boton-Venta {
     background-color: transparent;
     border: none;
     cursor: pointer;
 }
 
-.Boton-Venta .Icono-Perfil{
+.Boton-Venta .Icono-Perfil {
     font-size: 45px;
     color: #3da35d;
 }
 
-.ContenedorListado-Ventas{
+.ContenedorListado-Ventas {
     width: 90%;
     height: 75dvh;
     background-color: #FFF;
@@ -63,9 +62,10 @@ body {
     box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
     display: flex;
     flex-direction: column;
+    overflow: hidden;
 }
 
-.ContenedorSuperior-ListadoVentas{
+.ContenedorSuperior-ListadoVentas {
     width: 100%;
     height: 12dvh;
     background-color: #3da35d;
@@ -73,21 +73,23 @@ body {
     display: flex;
     flex-direction: row;
     align-items: center;
+    flex-shrink: 0;
 }
 
-.ContenedorSuperior-IzquierdaVentas{
+.ContenedorSuperior-IzquierdaVentas {
     width: 30%;
     height: 12dvh;
     border-radius: 12px 0px 0px 0px;
     display: flex;
     align-items: center;
 }
-.ContenedorSuperior-IzquierdaVentas h2{
+
+.ContenedorSuperior-IzquierdaVentas h2 {
     color: #FFF;
     padding: 20px;
 }
 
-.ContenedorSuperior-DerechaVentas{
+.ContenedorSuperior-DerechaVentas {
     width: 70%;
     height: 12dvh;
     border-radius: 0px 12px 0px 0px;
@@ -99,35 +101,35 @@ body {
 }
 
 .Buscador-Ventas {
-  position: relative;
-  display: inline-flex;
-  align-items: center;
+    position: relative;
+    display: inline-flex;
+    align-items: center;
 }
 
 .Buscador-Ventas .Icono-Buscador {
-  position: absolute;
-  left: 12px;
-  color: #3da35d;
-  font-size: 16px;
-  pointer-events: none;
+    position: absolute;
+    left: 12px;
+    color: #3da35d;
+    font-size: 16px;
+    pointer-events: none;
 }
 
 .Buscador-Ventas input {
-  padding: 10px 15px 10px 38px;
-  border-radius: 6px;
-  border: 1px solid transparent;
-  color: #333;
-  font-size: 14px;
-  outline: none;
-  width: 220px;
-  transition: border-color 0.2s ease;
+    padding: 10px 15px 10px 38px;
+    border-radius: 6px;
+    border: 1px solid transparent;
+    color: #333;
+    font-size: 14px;
+    outline: none;
+    width: 220px;
+    transition: border-color 0.2s ease;
 }
 
 .Buscador-Ventas input:focus {
-  border-color: #2b7a44;
+    border-color: #2b7a44;
 }
 
-.ContenedorSuperior-DerechaVentas .Select-FiltroVentas{
+.ContenedorSuperior-DerechaVentas .Select-FiltroVentas {
     padding: 10px 15px 10px 10px;
     border-radius: 6px;
     border: 1px solid transparent;
@@ -138,20 +140,22 @@ body {
     transition: border-color 0.2s ease;
 }
 
-.Select-FiltroVentas select:focus{
+.Select-FiltroVentas select:focus {
     border-color: #2b7a44;
 }
 
-.ContenedorEncabezado-ListadoVentas{
+
+.ContenedorEncabezado-ListadoVentas {
     width: 100%;
-    min-height: 13dvh; 
+    min-height: 12dvh;
     display: flex;
     flex-direction: row;
     align-items: center;
     border-bottom: 1px solid #96e072;
+    flex-shrink: 0;
 }
 
-.ContenedorEncabezado-ListadoVentas ul{
+.ContenedorEncabezado-ListadoVentas ul {
     width: 100%;
     padding: 0;
     margin: 0;
@@ -161,7 +165,7 @@ body {
     list-style: none;
 }
 
-.ContenedorEncabezado-ListadoVentas li{
+.ContenedorEncabezado-ListadoVentas li {
     text-align: center;
     color: #3da35d;
     font-size: 18px;
@@ -172,6 +176,13 @@ body {
     hyphens: auto;
 }
 
+
+.Contenedor-ListadoVentas,
+.SalesList-Contenedor {
+    width: 100%;
+    flex: 1;
+    overflow-y: auto;
+}
 
 .ListaDatos-Ventas {
     width: 100%;
@@ -303,22 +314,27 @@ body {
     display: none;
   }
 
-  /* Scroll vertical para el listado */
+
   .Contenedor-ListadoVentas,
+  .SalesList-Contenedor {
+    width: 100%;
+    flex: 1;
+    overflow-y: auto !important;
+    box-sizing: border-box;
+  }
+
   .ListaDatos-Ventas {
     display: flex;
     flex-direction: column;
     width: 100%;
-    height: 100%;
-    overflow-y: auto;
-    overflow-x: hidden;
+    height: auto;
     padding: 10px;
     gap: 15px;
     box-sizing: border-box;
     background-color: #f4f8f1;
   }
 
-  /* Layout principal de cada Venta */
+
   .Fila-Ventas {
     display: grid !important;
     grid-template-columns: 110px 1fr !important;
@@ -331,11 +347,9 @@ body {
     box-sizing: border-box;
     overflow: hidden;
     box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+    flex-shrink: 0;
   }
 
-
-
-  /* Etiquetas fijas a la izquierda ocupando las 6 filas */
   .Fila-Ventas::before {
     content: "Fecha y Hora\a Vendedor\a Producto\a Cantidad\a Categoría\a Total Venta";
     white-space: pre-line;
@@ -353,7 +367,6 @@ body {
     box-sizing: border-box;
   }
 
-  /* Cada dato se coloca automáticamente en la columna 2, uno bajo otro */
   .Fila-Ventas span {
     grid-column: 2;
     display: flex;
@@ -371,7 +384,6 @@ body {
 }
 
 
-/* PANTALLAS MEDIANAS (TABLETS / LAPTOPS PEQUEÑAS) */
 @media screen and (max-width: 1200px) {
   html, body {
     height: 100%;
@@ -474,14 +486,20 @@ body {
     display: none;
   }
 
+
   .Contenedor-ListadoVentas,
+  .SalesList-Contenedor {
+    width: 100%;
+    flex: 1;
+    overflow-y: auto !important;
+    box-sizing: border-box;
+  }
+
   .ListaDatos-Ventas {
     display: flex;
     flex-direction: column;
     width: 100%;
-    height: 100%;
-    overflow-y: auto;
-    overflow-x: hidden;
+    height: auto;
     padding: 12px;
     gap: 16px;
     box-sizing: border-box;
@@ -500,6 +518,7 @@ body {
     box-sizing: border-box;
     overflow: hidden;
     box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+    flex-shrink: 0;
   }
 
   .Fila-Ventas::before {
