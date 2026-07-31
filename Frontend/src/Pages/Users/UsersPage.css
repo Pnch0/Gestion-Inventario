@@ -4,17 +4,15 @@ body {
     margin: 0;
     min-height: 100vh;
     background-color: #f2f7ec;
-
 }
 
 #root {
     width: 100%;
     min-height: 100vh;
     display: block;
-    
 }
 
-.Contenedor-UsersPage{
+.Contenedor-UsersPage {
     width: 100%;
     height: auto;
     display: flex;
@@ -23,7 +21,7 @@ body {
     gap: 50px;
 }
 
-.ContenedorSuperior-UsersPage{
+.ContenedorSuperior-UsersPage {
     width: 100%;
     height: 13dvh;
     display: flex;
@@ -34,7 +32,7 @@ body {
     margin-right: 80px;
 }
 
-.ContenedorSuperior-UsersPage .Boton-Funcion{
+.ContenedorSuperior-UsersPage .Boton-Funcion {
     background-color: #3da35d;
     padding: 15px 25px;
     border-radius: 8px;
@@ -44,18 +42,19 @@ body {
     font-size: 16px;
 }
 
-.ContenedorSuperior-UsersPage .Boton-Usuario{
+.ContenedorSuperior-UsersPage .Boton-Usuario {
     background-color: transparent;
     border: none;
     cursor: pointer;
 }
 
-.Boton-Usuario .Icono-Perfil{
+.Boton-Usuario .Icono-Perfil {
     font-size: 45px;
     color: #3da35d;
 }
 
-.ContenedorListado-UsersPage{
+
+.ContenedorListado-UsersPage {
     width: 90%;
     height: 75dvh;
     background-color: #FFF;
@@ -63,9 +62,11 @@ body {
     box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
     display: flex;
     flex-direction: column;
+    overflow: hidden;
 }
 
-.ContenedorSuperior-ListadoUsuarios{
+
+.ContenedorSuperior-ListadoUsuarios {
     width: 100%;
     height: 12dvh;
     background-color: #3da35d;
@@ -73,9 +74,10 @@ body {
     display: flex;
     flex-direction: row;
     align-items: center;
+    flex-shrink: 0;
 }
 
-.ContenedorSuperior-IzquierdaUsuarios{
+.ContenedorSuperior-IzquierdaUsuarios {
     width: 30%;
     height: 12dvh;
     border-radius: 12px 0px 0px 0px;
@@ -83,12 +85,12 @@ body {
     align-items: center;
 }
 
-.ContenedorSuperior-IzquierdaUsuarios h2{
+.ContenedorSuperior-IzquierdaUsuarios h2 {
     color: #FFF;
     padding: 20px;
 }
 
-.ContenedorSuperior-DerechaUsuarios{
+.ContenedorSuperior-DerechaUsuarios {
     width: 70%;
     height: 12dvh;
     border-radius: 0px 12px 0px 0px;
@@ -100,35 +102,35 @@ body {
 }
 
 .Buscador-Usuarios {
-  position: relative;
-  display: inline-flex;
-  align-items: center;
+    position: relative;
+    display: inline-flex;
+    align-items: center;
 }
 
 .Buscador-Usuarios .Icono-Buscador {
-  position: absolute;
-  left: 12px;
-  color: #3da35d;
-  font-size: 16px;
-  pointer-events: none;
+    position: absolute;
+    left: 12px;
+    color: #3da35d;
+    font-size: 16px;
+    pointer-events: none;
 }
 
 .Buscador-Usuarios input {
-  padding: 10px 15px 10px 38px;
-  border-radius: 6px;
-  border: 1px solid transparent;
-  color: #333;
-  font-size: 14px;
-  outline: none;
-  width: 220px;
-  transition: border-color 0.2s ease;
+    padding: 10px 15px 10px 38px;
+    border-radius: 6px;
+    border: 1px solid transparent;
+    color: #333;
+    font-size: 14px;
+    outline: none;
+    width: 220px;
+    transition: border-color 0.2s ease;
 }
 
 .Buscador-Usuarios input:focus {
-  border-color: #2b7a44;
+    border-color: #2b7a44;
 }
 
-.ContenedorSuperior-DerechaUsuarios .Select-FiltroUsuarios{
+.ContenedorSuperior-DerechaUsuarios .Select-FiltroUsuarios {
     padding: 10px 15px 10px 10px;
     border-radius: 6px;
     border: 1px solid transparent;
@@ -139,18 +141,19 @@ body {
     transition: border-color 0.2s ease;
 }
 
-.Select-FiltroUsuarios select:focus{
+.Select-FiltroUsuarios select:focus {
     border-color: #2b7a44;
 }
 
-.ContenedorEncabezado-ListadoUsuarios{
+
+.ContenedorEncabezado-ListadoUsuarios {
     width: 100%;
     height: 13dvh;
     display: flex;
     flex-direction: row;
     align-items: center;
     border-bottom: 1px solid #96e072;
-
+    flex-shrink: 0;
 }
 
 .ContenedorEncabezado-ListadoUsuarios ul {
@@ -162,7 +165,7 @@ body {
     align-items: center;
 }
 
-.ContenedorEncabezado-ListadoUsuarios li{
+.ContenedorEncabezado-ListadoUsuarios li {
     list-style: none;
     flex: 1;
     text-align: center;
@@ -171,9 +174,11 @@ body {
     font-weight: bold;
 }
 
+
 .UserList-Contenedor {
     width: 100%;
-    max-height: 60dvh;
+    flex: 1;
+    min-height: 0;
     overflow-y: auto;
 }
 
@@ -194,7 +199,6 @@ body {
     align-items: center;
     padding: 40px 0;
     border-bottom: 1px solid #96e072;
-
 }
 
 .Fila-Usuario span {
@@ -206,27 +210,24 @@ body {
     color: #2b7a44;
 }
 
-
 .Acciones-Botones {
     display: flex;
     justify-content: center;
     gap: 8px;
 }
 
-.Acciones-Botones button{
+.Acciones-Botones button {
     background-color: transparent;
     border: none;
     outline: none;
     cursor: pointer;
 }
 
-.Acciones-Botones .Icono-Acciones{
+.Acciones-Botones .Icono-Acciones {
     font-size: 30px;
     color: #2b7a44;
 }
 
-
-/* DISEÑO VENTANAS MODALES */
 
 .modal-overlay {
     position: fixed;
@@ -429,7 +430,6 @@ body {
     background-color: #dc2626;
 }
 
-
 @keyframes fadeIn {
     from { opacity: 0; }
     to { opacity: 1; }
@@ -445,6 +445,15 @@ body {
         transform: translateY(0);
     }
 }
+
+.Contenedor-ListadoUsuarios,
+.UserList-Contenedor {
+    width: 100%;
+    flex: 1;
+    min-height: 0;
+    overflow-y: auto !important;
+}
+
 
 
 /* MEDIA QUERIES */
@@ -670,7 +679,7 @@ body {
     flex-direction: column;
   }
 
-  /* Cabecera Verde */
+
   .ContenedorSuperior-ListadoUsuarios {
     flex-direction: column;
     height: auto;
@@ -777,6 +786,233 @@ body {
 
   .Acciones-Botones .Icono-Acciones {
     font-size: 24px;
+  }
+
+  .Fila-Doble {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media screen and (max-width: 1200px) {
+  
+  html, body {
+    height: 100%;
+    overflow: hidden;
+  }
+
+  #root {
+    height: 100%;
+    overflow: hidden;
+  }
+
+  .Contenedor-UsersPage {
+    gap: 0;
+    height: 100dvh;
+    max-height: 100dvh;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 10px;
+    padding-bottom: 75px;
+    box-sizing: border-box;
+    overflow: hidden;
+  }
+
+  .ContenedorSuperior-UsersPage {
+    width: 92%;
+    max-width: 700px;
+    height: auto;
+    flex-direction: row;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 15px;
+    margin-right: 0;
+    padding: 0;
+    box-sizing: border-box;
+    flex-shrink: 0;
+  }
+
+  .ContenedorSuperior-UsersPage .Boton-Funcion {
+    padding: 10px 16px;
+    font-size: 14px;
+  }
+
+  .ContenedorListado-UsersPage {
+    width: 92%;
+    max-width: 700px;
+    height: auto;
+    max-height: calc(100dvh - 160px);
+    margin: auto 0;
+    overflow: hidden;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+    display: flex;
+    flex-direction: column;
+  }
+
+  .ContenedorSuperior-ListadoUsuarios {
+    flex-direction: column;
+    height: auto;
+    padding: 12px 15px;
+    gap: 10px;
+    border-radius: 12px 12px 0 0;
+    box-sizing: border-box;
+    flex-shrink: 0;
+  }
+
+  .ContenedorSuperior-IzquierdaUsuarios,
+  .ContenedorSuperior-DerechaUsuarios {
+    width: 100%;
+    height: auto;
+    justify-content: center;
+    margin-right: 0;
+    box-sizing: border-box;
+  }
+
+  .ContenedorSuperior-DerechaUsuarios {
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .ContenedorSuperior-DerechaUsuarios .Select-FiltroUsuarios {
+    width: 100% !important;
+    max-width: 100%;
+    box-sizing: border-box;
+  }
+
+
+  .Buscador-Usuarios {
+    position: relative !important;
+    display: flex !important;
+    align-items: center !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+  }
+
+  .Buscador-Usuarios .Icono-Buscador {
+    position: absolute !important;
+    left: 12px !important;
+    top: 50% !important;
+    transform: translateY(-50%) !important;
+    color: #3da35d !important;
+    font-size: 16px !important;
+    pointer-events: none !important;
+    z-index: 2 !important;
+  }
+
+  .Buscador-Usuarios input {
+    width: 100% !important;
+    max-width: 100% !important;
+    padding: 10px 15px 10px 38px !important;
+    border-radius: 6px !important;
+    font-size: 14px !important;
+    box-sizing: border-box !important;
+  }
+
+  .Select-FiltroUsuarios select,
+  .ContenedorSuperior-DerechaUsuarios select {
+    width: 100% !important;
+    max-width: 100%;
+    box-sizing: border-box;
+    font-size: 14px;
+    padding: 10px;
+  }
+
+  .ContenedorEncabezado-ListadoUsuarios {
+    display: none;
+  }
+
+  .Contenedor-ListadoUsuarios,
+  .UserList-Contenedor {
+    width: 100%;
+    flex: 1;
+    overflow-y: auto !important;
+    overflow-x: hidden;
+    box-sizing: border-box;
+    background-color: #f4f8f1;
+    display: block;
+  }
+
+
+  .UserList-Contenedor::before {
+    display: none !important;
+  }
+
+
+  .ListaDatos-Usuarios {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: auto;
+    padding: 12px;
+    gap: 15px;
+    box-sizing: border-box;
+    overflow-x: hidden;
+    overflow-y: visible;
+  }
+
+
+  .Fila-Usuario {
+    display: grid !important;
+    grid-template-columns: 110px 1fr !important;
+    grid-template-rows: repeat(7, minmax(28px, auto)) !important;
+    width: 100%;
+    min-width: 0;
+    background-color: #ffffff;
+    border-radius: 10px;
+    border: 1px solid #dbead5;
+    padding: 0 !important;
+    box-sizing: border-box;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+    flex-shrink: 0;
+  }
+
+ 
+  .Fila-Usuario::before {
+    content: "RUT\a Nombre\a Apellido\a Rol\a Correo\a Teléfono\a Acciones";
+    white-space: pre-line;
+    font-weight: bold;
+    color: #3da35d;
+    font-size: 13px;
+    line-height: 2.2;
+    padding: 5px 10px;
+    background-color: #f4f8f1;
+    border-right: 1px solid #dbead5;
+    text-align: left;
+    grid-column: 1;
+    grid-row: 1 / span 7;
+    display: block;
+    box-sizing: border-box;
+  }
+
+  .Fila-Usuario span {
+    grid-column: 2;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    text-align: center;
+    font-size: 13px;
+    line-height: 1.2;
+    padding: 4px 5px;
+    color: #2b7a44;
+    box-sizing: border-box;
+    word-break: break-word;
+  }
+
+  .Acciones-Botones {
+    grid-column: 2;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 12px;
+    padding: 4px 0;
+  }
+
+  .Acciones-Botones .Icono-Acciones {
+    font-size: 22px;
   }
 
   .Fila-Doble {
