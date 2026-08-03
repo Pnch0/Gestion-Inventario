@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useNavigate } from 'react-router-dom';
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import './LoginPage.css';
-import { LoginService } from "../../Services/api.js";
+import { AuthService } from "../../Services/api.js";
 import { toast } from 'react-hot-toast';
 
 
@@ -21,7 +21,7 @@ function LoginPage(){
         console.log("Enviando datos: ", { email, password });
 
         try{
-            const data = await LoginService.login({ email, password });
+            const data = await AuthService.login({ email, password });
 
             console.log("Sesion inciada con éxito: ", data);
 

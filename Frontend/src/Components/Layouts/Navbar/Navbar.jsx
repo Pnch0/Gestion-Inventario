@@ -18,7 +18,7 @@ function Navbar(){
             localStorage.clear();
             sessionStorage.clear()
 
-            navigate("/login");
+            navigate("/");
         
         } catch(error){
             console.error("Error al cerrar sesión: ", error.message)
