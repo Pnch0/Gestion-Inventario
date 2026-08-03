@@ -66,11 +66,17 @@ body {
     filter: drop-shadow(0px 0px 8px rgba(255, 255, 255, 0.6));
 }
 
+.Contenedor-Links button{
+    background-color: transparent;
+    outline: none;
+    border: none;
+}
+
 
 /* MEDIA QUERIES */
 
 
-/* MEDIA QUERIES PARA PANTALLAS MAS PEQUEÑAS (CELULARES) */
+
 @media (max-width: 768px) {
     .Contenedor-Navbar {
         position: fixed !important;
