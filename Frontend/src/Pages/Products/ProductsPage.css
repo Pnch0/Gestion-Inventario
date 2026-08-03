@@ -644,15 +644,12 @@ body {
     }
 }
 
-/* ==========================================
-   MEDIA QUERIES - PAGINA DE PRODUCTOS (CON SCROLL INTERNO)
-   ========================================== */
 
-@media screen and (max-width: 1100px) {
+@media screen and (max-width: 1200px) {
     
     html, body {
         height: 100%;
-        overflow: hidden; /* Mantiene fija la pantalla general si se desea */
+        overflow: hidden;
     }
 
     #root {
@@ -660,7 +657,6 @@ body {
         overflow: hidden;
     }
 
-    /* --- Contenedor Principal --- */
     .Contenedor-ListProducts {
         gap: 15px;
         height: 100dvh;
@@ -670,12 +666,11 @@ body {
         justify-content: flex-start;
         align-items: center;
         padding-top: 10px;
-        padding-bottom: 80px; /* Espacio para el menú inferior */
+        padding-bottom: 80px; 
         box-sizing: border-box;
         overflow: hidden;
     }
 
-    /* --- Contenedor Superior (Botones / Perfil) --- */
     .ContenedorSuperior-ListProducts {
         width: 92%;
         height: auto;
@@ -698,20 +693,18 @@ body {
         font-size: 38px;
     }
 
-    /* --- Contenedor del Listado General --- */
     .ContenedorListado-ListadoProductos {
         width: 92%;
-        flex: 1; /* Hace que tome el espacio disponible */
+        flex: 1;
         max-height: calc(100dvh - 160px);
         margin: 0;
         box-shadow: none;
         display: flex;
         flex-direction: column;
         background-color: transparent;
-        overflow: hidden; /* Evita desbordes del marco */
+        overflow: hidden;
     }
 
-    /* --- Cabecera con Buscador y Select --- */
     .ContenedorSuperior-ListadoProductos {
         flex-direction: column;
         height: auto;
@@ -720,7 +713,7 @@ body {
         border-radius: 12px;
         box-sizing: border-box;
         margin-bottom: 15px;
-        flex-shrink: 0; /* La cabecera se mantiene arriba fija */
+        flex-shrink: 0;
     }
 
     .ContenedorSuperior-IzquierdaProductos,
@@ -759,17 +752,17 @@ body {
         display: none;
     }
 
-    /* --- CONTENEDOR ESPECÍFICO DE REACT QUE ENVUELVE AL LISTADO --- */
+
     .Contenedor-ListadoProductos,
     .ProductList-Contenedor {
         width: 100%;
         height: 100%;
-        overflow-y: auto !important; /* HABILITA EL SCROLL VERTICAL AQUÍ */
-        padding-right: 4px; /* Espacio para la barra de scroll */
+        overflow-y: auto !important;
+        padding-right: 4px;
         box-sizing: border-box;
     }
 
-    /* --- GRID DE TARJETAS DE PRODUCTO --- */
+
     .ListaDatos-Productos {
         display: grid;
         grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
@@ -793,7 +786,7 @@ body {
         align-items: flex-start;
     }
 
-    /* 1. ENVOLTORIO DE LA IMAGEN (Centrado) */
+
     .Fila-Productos > div:first-child {
         width: 100% !important;
         display: flex !important;
@@ -827,7 +820,7 @@ body {
         align-items: center !important;
     }
 
-    /* Ocultamos por defecto TODOS los spans */
+
     .Fila-Productos > span {
         display: none !important;
         padding: 0 16px;
@@ -835,7 +828,7 @@ body {
         box-sizing: border-box;
     }
 
-    /* 2. NOMBRE DEL PRODUCTO (1er span - CENTRADO) */
+
     .Fila-Productos > span:nth-of-type(1) {
         display: block !important;
         width: 100%;
@@ -847,7 +840,7 @@ body {
         line-height: 1.3;
     }
 
-    /* 3. CATEGORÍA (2do span - BADGE IZQUIERDA) */
+
     .Fila-Productos > span:nth-of-type(2) {
         display: inline-block !important;
         font-size: 0.78rem;
@@ -862,7 +855,7 @@ body {
         text-align: left;
     }
 
-    /* 4. STOCK (3er span en tu JSX) */
+
     .Fila-Productos > span:nth-of-type(3) {
         display: flex !important;
         align-items: center;
@@ -881,7 +874,7 @@ body {
         color: #64748b;
     }
 
-    /* 5. UBICACIÓN (4to span en tu JSX) */
+
     .Fila-Productos > span:nth-of-type(4) {
         display: flex !important;
         align-items: center;
@@ -900,7 +893,7 @@ body {
         color: #64748b;
     }
 
-    /* --- ACCIONES --- */
+
     .Acciones-Botones {
         width: 100%;
         display: flex;

@@ -230,12 +230,12 @@ body {
   }
 
   .Contenedor-SalesPage {
-    gap: 0;
+    gap: 15px;
     height: 100dvh;
     max-height: 100dvh;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
+    justify-content: flex-start;
     align-items: center;
     padding-top: 10px;
     padding-bottom: 75px;
@@ -263,9 +263,9 @@ body {
 
   .ContenedorListado-Ventas {
     width: 92%;
-    height: auto;
+    flex: 1;
     max-height: calc(100dvh - 160px);
-    margin: auto 0;
+    margin: 0;
     overflow: hidden;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
     display: flex;
@@ -314,7 +314,6 @@ body {
     display: none;
   }
 
-
   .Contenedor-ListadoVentas,
   .SalesList-Contenedor {
     width: 100%;
@@ -333,7 +332,6 @@ body {
     box-sizing: border-box;
     background-color: #f4f8f1;
   }
-
 
   .Fila-Ventas {
     display: grid !important;
@@ -396,12 +394,12 @@ body {
   }
 
   .Contenedor-SalesPage {
-    gap: 0;
+    gap: 15px;
     height: 100dvh;
     max-height: 100dvh;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
+    justify-content: flex-start;
     align-items: center;
     padding-top: 10px;
     padding-bottom: 75px;
@@ -411,7 +409,6 @@ body {
 
   .ContenedorSuperior-SalesPage {
     width: 92%;
-    max-width: 700px;
     height: auto;
     flex-direction: row;
     justify-content: flex-end;
@@ -430,10 +427,9 @@ body {
 
   .ContenedorListado-Ventas {
     width: 92%;
-    max-width: 700px;
-    height: auto;
+    flex: 1;
     max-height: calc(100dvh - 160px);
-    margin: auto 0;
+    margin: 0;
     overflow: hidden;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
     display: flex;
@@ -485,7 +481,6 @@ body {
   .ContenedorEncabezado-ListadoVentas {
     display: none;
   }
-
 
   .Contenedor-ListadoVentas,
   .SalesList-Contenedor {
