@@ -7,7 +7,7 @@ import { FaEdit, FaTrashAlt, FaBox } from "react-icons/fa";
 import '../../Pages/Products/ProductsPage.css';
 import ProductDetailModal from "./ProductDetailModal.jsx";
 
-function ProductsList({ refreshTrigger }){
+function ProductsList({ refreshTrigger, searchTerm = '', filterCriteria = 'Todos'}){
     const [products, setProducts] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState('');
@@ -66,13 +66,13 @@ function ProductsList({ refreshTrigger }){
     }, [refreshTrigger]);
 
     const handleDelete = (e, producto_id) => {
-        e.stopPropagation(); // Evita que se abra el modal de vista previa
+        e.stopPropagation();
         setProductoSeleccionadoId(producto_id);
         setMostrarConfirmacion(true);
     };
 
     const handleEdit = (e, product) => {
-        e.stopPropagation(); // Evita que se abra el modal de vista previa
+        e.stopPropagation();
         setEditTarget(product);
     };
 
@@ -107,6 +107,35 @@ function ProductsList({ refreshTrigger }){
         }
     };
 
+    const filteredProducts = products.filter((product) => {
+        const query = searchTerm.toLowerCase().trim();
+        if (!query) return true; // Si no hay nada escrito, muestra todos
+
+        const nombre = product.nombre?.toLowerCase() || '';
+        const categoria = product.categoria?.toLowerCase() || '';
+        const marca = product.marca?.toLowerCase() || '';
+        const ubicacion = product.ubicacion?.toLowerCase() || '';
+
+        switch (filterCriteria) {
+            case 'Nombre':
+                return nombre.includes(query);
+            case 'Categoria':
+                return categoria.includes(query);
+            case 'Marca':
+                return marca.includes(query);
+            case 'Ubicacion':
+                return ubicacion.includes(query);
+            case 'Todos':
+            default:
+                return (
+                    nombre.includes(query) ||
+                    categoria.includes(query) ||
+                    marca.includes(query) ||
+                    ubicacion.includes(query)
+                );
+        }
+    });
+
     if (loading) return (
         <div style={{ display: 'flex', justifyContent: 'center', padding: '50px' }}>
             <ClipLoader color="#3da35d" loading={loading} size={50} />
@@ -118,11 +147,15 @@ function ProductsList({ refreshTrigger }){
     return(
         <>
         <div className="ProductList-Contenedor">
+            {/* 3. Comprobamos si no hay productos registrados en total o no coinciden con la búsqueda */}
             {products.length === 0 ? (
-                <p>No hay productos registrados</p>
+                <p style={{ textAlign: 'center', padding: '20px' }}>No hay productos registrados</p>
+            ) : filteredProducts.length === 0 ? (
+                <p style={{ textAlign: 'center', padding: '20px' }}>No se encontraron productos que coincidan con la búsqueda.</p>
             ) : (
                 <ul className="ListaDatos-Productos">
-                    {products.map((product) =>(
+                    {/* 4. Mapeamos la lista filtrada en lugar de products */}
+                    {filteredProducts.map((product) =>(
                         <li 
                             key={product.producto_id} 
                             className="Fila-Productos"

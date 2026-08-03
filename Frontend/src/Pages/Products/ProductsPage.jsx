@@ -7,6 +7,8 @@ import CreateProduct from '../../Components/Products/CreateProducts.jsx';
 function ProductsPage(){
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [refreshTrigger, setRefreshTrigger] = useState(0);
+    const [searchTerm, setSearchTerm] = useState('');
+    const [filterCriteria, setFilterCriteria] = useState('Todos');
 
     const handleProductCreated = () => {
         setRefreshTrigger(prev => prev + 1);
@@ -35,11 +37,20 @@ function ProductsPage(){
                     <div className="ContenedorSuperior-DerechaProductos">
                         <div className="Buscador-Productos">
                             <FaSearch className="Icono-Buscador" />
-                            <input type="text" placeholder="Buscar producto..." />
+                            <input 
+                                type="text" 
+                                placeholder="Buscar producto..." 
+                                value={searchTerm}
+                                onChange={(e) => setSearchTerm(e.target.value)}
+                            />
                         </div>
 
-                        <select className='Select-FiltroProductos'>
-                            <option value="Todos">Todos los Productos</option>
+                        <select 
+                            className='Select-FiltroProductos'
+                            value={filterCriteria}
+                            onChange={(e) => setFilterCriteria(e.target.value)}
+                        >
+                            <option value="Todos">Todos los Campos</option>
                             <option value="Nombre">Nombre</option>
                             <option value="Categoria">Categoría</option>
                             <option value="Marca">Marca</option>
@@ -60,7 +71,11 @@ function ProductsPage(){
                     </ul>
                 </div>
                 <div className="Contenedor-ListadoProductos">
-                    <ProductsList refreshTrigger={refreshTrigger} />
+                    <ProductsList 
+                        refreshTrigger={refreshTrigger} 
+                        searchTerm={searchTerm}
+                        filterCriteria={filterCriteria}
+                    />
                 </div>
             </div>
         </div>
