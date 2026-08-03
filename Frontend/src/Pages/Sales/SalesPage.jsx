@@ -7,6 +7,8 @@ import CreateSales from '../../Components/Sales/CreateSales.jsx';
 function SalesPage(){
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [refreshTrigger, setRefreshTrigger] = useState(0);
+    const [searchTerm, setSearchTerm] = useState('');
+    const [filterCriteria, setFilterCriteria] = useState('Todos');
 
     const handleSaleCreated = () => {
         setRefreshTrigger(prev => prev + 1);
@@ -35,14 +37,23 @@ function SalesPage(){
                     <div className="ContenedorSuperior-DerechaVentas">
                         <div className="Buscador-Ventas">
                             <FaSearch className="Icono-Buscador" />
-                            <input type="text" placeholder='Buscar Venta...'/>
+                            <input 
+                                type="text" 
+                                placeholder='Buscar Venta...'
+                                value={searchTerm}
+                                onChange={(e) => setSearchTerm(e.target.value)}
+                            />
                         </div>
 
-                        <select className='Select-FiltroVentas'>
-                            <option value="Todos">Todos las Ventas</option>
+                       <select 
+                            className='Select-FiltroVentas'
+                            value={filterCriteria}
+                            onChange={(e) => setFilterCriteria(e.target.value)}
+                        >
+                            <option value="Todos">Todas las Ventas</option>
                             <option value="Mas_Vendidos">Productos más Vendidos</option>
-                            <option value="Menos_Vendidos">Productos sin ventas (Más tiempo estancados)</option>
-                            <option value="Por_Vendedor">Ventas por Vendedor</option>
+                            <option value="Menos_Vendidos">Productos con Menos Cantidad Vendida</option>
+                            <option value="Por_Vendedor">Filtrar por Vendedor</option>
                         </select>
                     </div>
                 </div>
@@ -59,7 +70,11 @@ function SalesPage(){
                 </div>
 
                 <div className="Contenedor-ListadoVentas">
-                    <SalesList refreshTrigger={refreshTrigger}/>
+                    <SalesList 
+                        refreshTrigger={refreshTrigger}
+                        searchTerm={searchTerm}
+                        filterCriteria={filterCriteria}
+                    />
                 </div>
 
             </div>
