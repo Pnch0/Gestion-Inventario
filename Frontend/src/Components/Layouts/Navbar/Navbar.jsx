@@ -1,13 +1,30 @@
 import React from "react";
 import './Navbar.css';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 import { FaHome, FaShoppingBasket, FaUser} from "react-icons/fa";
 import { CiBoxList } from "react-icons/ci";
-import { IoIosSettings } from "react-icons/io";
+import { IoIosExit  } from "react-icons/io";
+import { AuthService } from "../../../Services/api.js";
 
 
 
 function Navbar(){
+    const navigate = useNavigate();
+
+    const handleLogout = async () =>{
+        try{
+            await AuthService.logout();
+
+            localStorage.clear();
+            sessionStorage.clear()
+
+            navigate("/login");
+        
+        } catch(error){
+            console.error("Error al cerrar sesión: ", error.message)
+        }
+    };
+
 
     return(
         <>
@@ -35,9 +52,14 @@ function Navbar(){
                         </NavLink>
                     </li>
                     <li>
-                        <NavLink to="/settings-page" className="nav-item">
-                            <IoIosSettings className="Icono-Nav"/>
-                        </NavLink>
+                        <button 
+                            type="button" 
+                            onClick={handleLogout} 
+                            className="nav-item btn-logout"
+                            title="Cerrar sesión"
+                        >
+                            <IoIosExit className="Icono-Nav"/>
+                        </button>
                     </li>
                 </ul>
             </div>

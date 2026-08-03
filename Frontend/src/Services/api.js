@@ -261,7 +261,7 @@ export const roleService = {
 };
 
 
-export const LoginService = {
+export const AuthService = {
     login: async (credentials) =>{
         const response = await fetch(`${API_URL}/users/login`,{
             method: 'POST',
@@ -275,6 +275,20 @@ export const LoginService = {
         }
 
         return await response.json()
+    },
+
+    logout: async () => {
+        const response = await fetch(`${API_URL}/users/logout`,{
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' }
+        });
+
+        if (!response.ok){
+            const errorData = await response.json();
+            throw new Error(errorData.error || errorData.message || errorData.detalle || 'Error al cerrar sesión'); 
+        }
+
+        return await response.json();
     }
 };
 
