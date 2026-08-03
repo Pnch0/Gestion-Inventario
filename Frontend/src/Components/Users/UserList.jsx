@@ -1,12 +1,12 @@
 import React from "react";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { userService } from "../../Services/api.js";
 import '../../Pages/Users/UsersPage.css';
 import { FaEdit, FaTrashAlt } from "react-icons/fa";
 import toast, { Toaster } from 'react-hot-toast';
 import { ClipLoader } from "react-spinners";
 
-function UserList({refreshTrigger}) {
+function UserList({ refreshTrigger, searchTerm = '', filterCriteria = 'Todos' }) {
     const [users, setUsers] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState('');
@@ -100,6 +100,35 @@ function UserList({refreshTrigger}) {
             setEnviando(false);
         }
     };
+    const filteredUsers = useMemo(() => {
+        const query = searchTerm.toLowerCase().trim();
+
+        return users.filter(user => {
+            const rut = user.rut?.toLowerCase() || '';
+            const nombre = user.nombre?.toLowerCase() || '';
+            const apellido = user.apellido?.toLowerCase() || '';
+            const correo = user.correo?.toLowerCase() || '';
+            const telefono = user.telefono?.toLowerCase() || '';
+            const nombreRol = user.nombre_rol?.toLowerCase() || '';
+
+            if (filterCriteria !== 'Todos') {
+                if (nombreRol !== filterCriteria.toLowerCase()) {
+                    return false;
+                }
+            }
+
+            if (!query) return true;
+
+            return (
+                rut.includes(query) ||
+                nombre.includes(query) ||
+                apellido.includes(query) ||
+                correo.includes(query) ||
+                telefono.includes(query) ||
+                nombreRol.includes(query)
+            );
+        });
+    }, [users, searchTerm, filterCriteria]);
     
     if (loading) return (
     <div style={{ display: 'flex', justifyContent: 'center', padding: '50px' }}>
@@ -114,10 +143,12 @@ function UserList({refreshTrigger}) {
 
         <div className="UserList-Contenedor">
             {users.length === 0 ? (
-                <p>No hay usuarios registrados</p>
+                <p style={{ textAlign: 'center', padding: '20px' }}>No hay usuarios registrados</p>
+            ) : filteredUsers.length === 0 ? (
+                <p style={{ textAlign: 'center', padding: '20px' }}>No se encontraron usuarios que coincidan con la búsqueda.</p>
             ) : (
                 <ul className="ListaDatos-Usuarios">
-                    {users.map((user) => (
+                    {filteredUsers.map((user) => (
                         <li key={user.id_auth} className="Fila-Usuario">
                             <span>{user.rut}</span>
                             <span>{user.nombre}</span>

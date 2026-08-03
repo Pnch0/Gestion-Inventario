@@ -7,6 +7,8 @@ import UserList from '../../Components/Users/UserList.jsx';
 function UsersPage() {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [refreshTrigger, setRefreshTrigger] = useState(0);
+    const [searchTerm, setSearchTerm] = useState('');
+    const [filterCriteria, setFilterCriteria] = useState('Todos');
 
     const handleUserCreated = () => {
         setRefreshTrigger(prev => prev + 1);
@@ -35,10 +37,19 @@ function UsersPage() {
                         <div className="ContenedorSuperior-DerechaUsuarios">
                             <div className="Buscador-Usuarios">
                                 <FaSearch className="Icono-Buscador" />
-                                <input type="text" placeholder="Buscar usuario..." />
+                                <input 
+                                    type="text" 
+                                    placeholder="Buscar usuario..." 
+                                    value={searchTerm}
+                                    onChange={(e) => setSearchTerm(e.target.value)}
+                                />
                             </div>
 
-                            <select className='Select-FiltroUsuarios'>
+                            <select 
+                                className='Select-FiltroUsuarios'
+                                value={filterCriteria}
+                                onChange={(e) => setFilterCriteria(e.target.value)}
+                            >
                                 <option value="Todos">Todos los roles</option>
                                 <option value="Administrador">Administrador</option>
                                 <option value="Vendedor">Vendedor</option>
@@ -60,7 +71,11 @@ function UsersPage() {
                     </div>
 
                     <div className="Contenedor-ListadoUsuarios">
-                        <UserList refreshTrigger={refreshTrigger} />
+                        <UserList 
+                            refreshTrigger={refreshTrigger}
+                            searchTerm={searchTerm}
+                            filterCriteria={filterCriteria}
+                        />
                     </div>
                 </div>
             </div>
