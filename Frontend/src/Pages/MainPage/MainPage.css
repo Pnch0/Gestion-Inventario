@@ -1,0 +1,87 @@
+body {
+    font-family: sans-serif;
+    box-sizing: border-box;
+    margin: 0;
+    min-height: 100vh;
+    background-color: #f2f7ec;
+}
+
+#root {
+    width: 100%;
+    min-height: 100vh;
+    display: block;
+}
+
+.Contenedor-MainPage {
+    width: 100%;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.ContenedorSecciones-MainPage{
+    width: 80%;
+    height: 80dvh;
+    display: flex;
+    flex-direction: column;
+    border-radius: 13px;
+}
+
+.ContenedorSuperior-MainPage{
+    width: 100%;
+    height: 13dvh;
+    background-color: #3da35d;
+    border-radius: 20px;
+}
+
+.Contenedor-GananciasDia{
+    width: 100%;
+    height: 13dvh;
+    display: flex;
+    align-items: center;
+    padding-left: 20px;
+    color: #FFF;
+}
+
+.ContenedorInferior-MainPage{
+    width: 100%;
+    height: 67dvh;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 45px;
+    justify-content: space-between;
+}
+
+.Contenedor-UltimasVentas, .Contenedor-StockFaltante, .Contenedor-MasVendidos{
+    width: 28%;
+    height: 40dvh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #3da35d;
+    font-size: 20px;
+    background-color: #FFF;
+    border-radius: 15px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+}
+
+.Contenedor-UltimasVentas h2,
+.Contenedor-StockFaltante h2,
+.Contenedor-MasVendidos h2 {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin: 0;
+    font-size: 1.8rem;
+
+}
+
+
+.Icono-Warning, .Icono-Shop, .Icono-Fire {
+    font-size: 32px;
+    color: #3da35d;
+    flex-shrink: 0;
+}
