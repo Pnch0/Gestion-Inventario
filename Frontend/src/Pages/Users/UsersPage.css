@@ -530,6 +530,10 @@ body {
     box-sizing: border-box;
   }
 
+  .ContenedorSuperior-IzquierdaUsuarios h2{
+    padding: 0;
+  }
+
   .ContenedorSuperior-DerechaUsuarios {
     flex-direction: column;
     gap: 8px;

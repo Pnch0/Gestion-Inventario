@@ -291,6 +291,10 @@ body {
     box-sizing: border-box;
   }
 
+  .ContenedorSuperior-IzquierdaVentas h2{
+    padding: 0;
+  }
+
   .ContenedorSuperior-DerechaVentas {
     flex-direction: column;
     gap: 8px;
