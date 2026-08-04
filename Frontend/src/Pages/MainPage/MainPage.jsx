@@ -205,7 +205,7 @@ function MainPage() {
                                             <tr key={idx}>
                                                 <td>#{idx + 1}</td>
                                                 <td>{item.nombre}</td>
-                                                <td>{item.cantidad} u.</td>
+                                                <td>{item.cantidad} unidades</td>
                                             </tr>
                                         ))}
                                     </tbody>
