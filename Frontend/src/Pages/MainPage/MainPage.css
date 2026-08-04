@@ -85,3 +85,97 @@ body {
     color: #3da35d;
     flex-shrink: 0;
 }
+
+
+
+.Tarjeta-Clickable {
+    cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.Tarjeta-Clickable:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.12);
+}
+
+
+.Modal-MainPage-Overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+}
+
+
+.Modal-MainPage-Content {
+    background-color: #FFF;
+    width: 90%;
+    max-width: 650px;
+    border-radius: 15px;
+    padding: 30px;
+    position: relative;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    color: #333;
+    max-height: 80vh;
+    overflow-y: auto;
+}
+
+.Modal-MainPage-Content h2 {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: #3da35d;
+    margin-top: 0;
+    font-size: 1.5rem;
+}
+
+.Boton-Cerrar-Modal {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background: transparent;
+    border: none;
+    font-size: 22px;
+    color: #888;
+    cursor: pointer;
+}
+
+.Boton-Cerrar-Modal:hover {
+    color: #333;
+}
+
+
+.Tabla-Modal {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 15px;
+}
+
+.Tabla-Modal th, .Tabla-Modal td {
+    padding: 12px 10px;
+    text-align: left;
+    border-bottom: 1px solid #e5e5e5;
+}
+
+.Tabla-Modal th {
+    background-color: #f8faf6;
+    color: #3da35d;
+    font-weight: bold;
+}
+
+.Stock-Alerta {
+    color: #d9534f;
+    font-weight: bold;
+}
+
+.Loader-Modal {
+    display: flex;
+    justify-content: center;
+    padding: 30px 0;
+}
