@@ -11,6 +11,11 @@ import { AuthService } from "../../../Services/api.js";
 function Navbar(){
     const navigate = useNavigate();
 
+    const usuarioStorage = localStorage.getItem('usuario');
+    const usuario = usuarioStorage ? JSON.parse(usuarioStorage) : null;
+    
+    const rol = usuario?.perfil?.nombre_rol?.toLowerCase() || '';
+
     const handleLogout = async () =>{
         try{
             await AuthService.logout();
@@ -36,21 +41,31 @@ function Navbar(){
                             <FaHome className="Icono-Nav" />
                         </NavLink>
                     </li>
-                    <li>
-                        <NavLink to="/list-page" className="nav-item">
-                            <CiBoxList className="Icono-Nav"/>
-                        </NavLink>
-                    </li>
-                    <li>
-                        <NavLink to="/sales-page" className="nav-item">
-                            <FaShoppingBasket className="Icono-Nav"/>
-                        </NavLink>
-                    </li>
-                    <li>
-                        <NavLink to="/users-page" className="nav-item">
-                            <FaUser className="Icono-Nav"/>
-                        </NavLink>
-                    </li>
+
+                    {(rol === 'administrador' || rol === 'bodega') && (
+                        <li>
+                            <NavLink to="/list-page" className="nav-item">
+                                <CiBoxList className="Icono-Nav"/>
+                            </NavLink>
+                        </li>
+                    )}
+
+                    {(rol === 'administrador' || rol === 'vendedor') && (
+                        <li>
+                            <NavLink to="/sales-page" className="nav-item">
+                                <FaShoppingBasket className="Icono-Nav"/>
+                            </NavLink>
+                        </li>
+                    )}
+
+                    {rol === 'administrador' && (
+                        <li>
+                            <NavLink to="/users-page" className="nav-item">
+                                <FaUser className="Icono-Nav"/>
+                            </NavLink>
+                        </li>
+                    )}
+
                     <li>
                         <button 
                             type="button" 
@@ -65,7 +80,7 @@ function Navbar(){
             </div>
         </div>
         </>
-    )
+    );
 }
 
 export default Navbar;

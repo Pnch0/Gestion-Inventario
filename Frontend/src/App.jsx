@@ -17,10 +17,23 @@ function App() {
         
         <Route element={<ProtectedRoute />}>
           <Route element={<MainLayout />}>
-            <Route path="/main-page" element={<MainPage />} />
-            <Route path="/users-page" element={<UsersPage />} />
-            <Route path="/list-page" element={<ProductsPage />} />
-            <Route path="/sales-page" element={<SalesPage />} />
+            
+            <Route element={<ProtectedRoute allowedRoles={['administrador', 'vendedor', 'bodega']} />}>
+              <Route path="/main-page" element={<MainPage />} />
+            </Route>
+
+            <Route element={<ProtectedRoute allowedRoles={['administrador']} />}>
+              <Route path="/users-page" element={<UsersPage />} />
+            </Route>
+
+            <Route element={<ProtectedRoute allowedRoles={['administrador', 'bodega']} />}>
+              <Route path="/list-page" element={<ProductsPage />} />
+            </Route>
+
+            <Route element={<ProtectedRoute allowedRoles={['administrador', 'vendedor']} />}>
+              <Route path="/sales-page" element={<SalesPage />} />
+            </Route>
+
           </Route>
         </Route>
 
