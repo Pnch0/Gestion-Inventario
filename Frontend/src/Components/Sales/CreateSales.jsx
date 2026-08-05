@@ -1,6 +1,22 @@
 import React, { useState, useEffect } from "react";
 import { saleService, productService } from "../../Services/api";
-import toast from 'react-hot-toast';
+import toast, { Toaster } from 'react-hot-toast';
+
+const toastStyles = {
+    exito: {
+        duration: 4000,
+        position: 'top-center',
+        style: { border: '1px solid #BBF7D0', padding: '16px', color: '#166534', background: '#EDFCF2' },
+        iconTheme: { primary: '#15803D', secondary: '#EDFCF2' }
+    },
+    error: {
+        duration: 4000,
+        position: 'top-center',
+        style: { border: '1px solid #FECDD3', padding: '16px', color: '#991B1B', background: '#FFF1F2' },
+        iconTheme: { primary: '#991B1B', secondary: '#FFF1F2' }
+    }
+};
+
 
 function CreateSales({ isOpen, onClose, onSaleCreated }) {
     const [rutCliente, setRutCliente] = useState('');
@@ -17,7 +33,6 @@ function CreateSales({ isOpen, onClose, onSaleCreated }) {
 
     const [loading, setLoading] = useState(false);
 
-    // Cargar la lista de productos disponibles al abrir el modal
     useEffect(() => {
         if (!isOpen) return;
 
@@ -27,7 +42,7 @@ function CreateSales({ isOpen, onClose, onSaleCreated }) {
                 setProductos(data);
             } catch (error) {
                 console.error("Error al obtener productos:", error);
-                toast.error('Error al conectar con el servidor para obtener los productos');
+                toast.error('Error al conectar con el servidor para obtener los productos', toastStyles.error);
             }
         };
 
@@ -36,7 +51,6 @@ function CreateSales({ isOpen, onClose, onSaleCreated }) {
 
     if (!isOpen) return null;
 
-    // Manejar el cambio en el selector de productos y campos de cantidad
     const handleProductChange = (e) => {
         const { name, value, type } = e.target;
         const val = type === 'number' ? Number(value) : value;
@@ -68,22 +82,20 @@ function CreateSales({ isOpen, onClose, onSaleCreated }) {
         }
     };
 
-    // Agregar un producto a la lista temporal de detalles
     const handleAddProduct = (e) => {
         e.preventDefault();
-
         if (!currentProduct.producto_id) {
-            toast.error('Por favor, selecciona un producto.');
+            toast.error('Por favor, selecciona un producto.', toastStyles.error);
             return;
         }
 
         if (currentProduct.cantidad_venta <= 0) {
-            toast.error('La cantidad debe ser mayor a 0.');
+            toast.error('La cantidad debe ser mayor a 0.', toastStyles.error);
             return;
         }
 
         if (currentProduct.cantidad_venta > currentProduct.stockDisponible) {
-            toast.error(`Stock insuficiente. Solo quedan ${currentProduct.stockDisponible} unidades.`);
+            toast.error(`Stock insuficiente. Solo quedan ${currentProduct.stockDisponible} unidades.`, toastStyles.error);
             return;
         }
 
@@ -93,7 +105,7 @@ function CreateSales({ isOpen, onClose, onSaleCreated }) {
             const nuevaCantidad = nuevosDetalles[existeIndex].cantidad_venta + currentProduct.cantidad_venta;
 
             if (nuevaCantidad > currentProduct.stockDisponible) {
-                toast.error(`No puedes agregar más de ${currentProduct.stockDisponible} unidades de este producto.`);
+                toast.error(`No puedes agregar más de ${currentProduct.stockDisponible} unidades de este producto.`, toastStyles.error);
                 return;
             }
 
@@ -111,7 +123,6 @@ function CreateSales({ isOpen, onClose, onSaleCreated }) {
             ]);
         }
 
-        // Limpiar selector del producto actual
         setCurrentProduct({
             producto_id: '',
             nombre: '',
@@ -121,48 +132,42 @@ function CreateSales({ isOpen, onClose, onSaleCreated }) {
         });
     };
 
-    // Eliminar un producto de la lista temporal
     const handleRemoveProduct = (id) => {
         setDetalles(detalles.filter(item => item.producto_id !== id));
     };
 
-    // Calcular el total general dinámicamente
     const calcularTotalGeneral = () => {
         return detalles.reduce((sum, item) => sum + (item.cantidad_venta * item.precio_unitario), 0);
     };
 
-    // Enviar el formulario para registrar la venta
     const handleSubmit = async (e) => {
         e.preventDefault();
         setLoading(true);
 
-        // 1. Obtener el usuario logueado desde localStorage
         const rawUsuario = localStorage.getItem('usuario');
         const usuarioLogueado = rawUsuario ? JSON.parse(rawUsuario) : {};
 
-        // Búsqueda del RUT (ahora revisa la propiedad 'perfil' que viene en tu localStorage)
         const rutTrabajador = 
-            usuarioLogueado.perfil?.rut ||           // <--- AQUÍ ES DONDE ESTÁ EN TU CASO
+            usuarioLogueado.perfil?.rut ||
             usuarioLogueado.rut || 
             usuarioLogueado.rut_vendedor || 
             usuarioLogueado.rut_usuario || 
             usuarioLogueado.usuario?.rut || 
-            usuarioLogueado.id;                     // Fallback al ID de usuario de Supabase
+            usuarioLogueado.id;
 
         if (!rutTrabajador) {
             console.error("No se encontró RUT ni ID en localStorage:", usuarioLogueado);
-            toast.error('No se detectó un usuario/vendedor activo. Por favor, vuelve a iniciar sesión.');
+            toast.error('No se detectó un usuario/vendedor activo. Por favor, vuelve a iniciar sesión.', toastStyles.error);
             setLoading(false);
             return;
         }
 
         if (detalles.length === 0) {
-            toast.error('Debes agregar al menos un producto a la lista.');
+            toast.error('Debes agregar al menos un producto a la lista.', toastStyles.error);
             setLoading(false);
             return;
         }
 
-        // 2. Armar el payload a enviar al backend
         const payload = {
             rut_vendedor: rutTrabajador,
             rut_cliente: rutCliente,
@@ -175,9 +180,8 @@ function CreateSales({ isOpen, onClose, onSaleCreated }) {
 
         try {
             await saleService.createSales(payload);
-            toast.success('¡Venta registrada con éxito!');
+            toast.success('¡Venta registrada con éxito!', toastStyles.exito);
 
-            // Limpiar formulario y cerrar modal
             setRutCliente('');
             setDetalles([]);
             setCurrentProduct({
@@ -193,7 +197,7 @@ function CreateSales({ isOpen, onClose, onSaleCreated }) {
 
         } catch (error) {
             console.error("Error al registrar venta:", error);
-            toast.error(error.message || 'Error al registrar la venta');
+            toast.error(error.message || 'Error al registrar la venta', toastStyles.error);
         } finally {
             setLoading(false);
         }

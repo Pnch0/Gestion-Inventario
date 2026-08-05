@@ -5,6 +5,22 @@ import toast from 'react-hot-toast';
 import imageCompression from 'browser-image-compression';
 
 
+const toastStyles = {
+    exito: {
+        duration: 4000,
+        position: 'top-center',
+        style: { border: '1px solid #BBF7D0', padding: '16px', color: '#166534', background: '#EDFCF2' },
+        iconTheme: { primary: '#15803D', secondary: '#EDFCF2' }
+    },
+    error: {
+        duration: 4000,
+        position: 'top-center',
+        style: { border: '1px solid #FECDD3', padding: '16px', color: '#991B1B', background: '#FFF1F2' },
+        iconTheme: { primary: '#991B1B', secondary: '#FFF1F2' }
+    }
+};
+
+
 function CreateProduct({ isOpen, onClose, onProductCreated }) {
     const [formData, setFormData] = useState({
         nombre: '',
@@ -31,7 +47,6 @@ function CreateProduct({ isOpen, onClose, onProductCreated }) {
         }));
     };
 
-
     const handleFileChange = async (e) => {
         const originalFile = e.target.files[0];
         if (!originalFile) return;
@@ -50,11 +65,12 @@ function CreateProduct({ isOpen, onClose, onProductCreated }) {
             const compressedFile = await imageCompression(originalFile, options);
 
             setFile(compressedFile);
-            toast.success('Imagen optimizada con éxito', { id: 'compressToast' });
+            toast.success('Imagen optimizada con éxito', { id: 'compressToast', ...toastStyles.exito });
         } catch (error) {
             console.error("Error al comprimir la imagen:", error);
             setFile(originalFile);
             toast.dismiss('compressToast');
+            toast.error('Error al optimizar la imagen, se usará la original', toastStyles.error);
         } finally {
             setCompressing(false);
         }
@@ -65,7 +81,7 @@ function CreateProduct({ isOpen, onClose, onProductCreated }) {
         setLoading(true);
 
         if (!formData.nombre || !formData.categoria || !formData.stock || !formData.precio_venta) {
-            toast.error('Nombre, categoría, stock y precio de venta son obligatorios');
+            toast.error('Nombre, categoría, stock y precio de venta son obligatorios', toastStyles.error);
             setLoading(false);
             return;
         }
@@ -83,7 +99,7 @@ function CreateProduct({ isOpen, onClose, onProductCreated }) {
 
             await productService.createProducts(dataToSend);
 
-            toast.success('¡Producto creado con éxito!');
+            toast.success('¡Producto creado con éxito!', toastStyles.exito);
 
             setFormData({
                 nombre: '', categoria: '', marca: '', stock: 0,
@@ -95,7 +111,7 @@ function CreateProduct({ isOpen, onClose, onProductCreated }) {
             onClose();
 
         } catch (error) {
-            toast.error(error.message || 'Hubo un error al registrar el producto');
+            toast.error(error.message || 'Hubo un error al registrar el producto', toastStyles.error);
         } finally {
             setLoading(false);
         }
@@ -210,6 +226,7 @@ function CreateProduct({ isOpen, onClose, onProductCreated }) {
                             name="imagen"
                             accept="image/*"
                             onChange={handleFileChange}
+                            disabled={compressing}
                         />
                     </div>
 
@@ -218,14 +235,14 @@ function CreateProduct({ isOpen, onClose, onProductCreated }) {
                             type="button" 
                             className="Boton-Cancelar" 
                             onClick={onClose}
-                            disabled={loading}
+                            disabled={loading || compressing}
                         >
                             Cancelar
                         </button>
                         <button 
                             type="submit" 
                             className="Boton-Guardar"
-                            disabled={loading}
+                            disabled={loading || compressing}
                         >
                             {loading ? 'Guardando...' : 'Crear Producto'}
                         </button>

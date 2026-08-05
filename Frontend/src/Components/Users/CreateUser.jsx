@@ -2,6 +2,21 @@ import React, { useState } from "react";
 import { userService } from "../../Services/api.js";
 import toast from 'react-hot-toast';
 
+const toastStyles = {
+    exito: {
+        duration: 4000,
+        position: 'top-center',
+        style: { border: '1px solid #BBF7D0', padding: '16px', color: '#166534', background: '#EDFCF2' },
+        iconTheme: { primary: '#15803D', secondary: '#EDFCF2' }
+    },
+    error: {
+        duration: 4000,
+        position: 'top-center',
+        style: { border: '1px solid #FECDD3', padding: '16px', color: '#991B1B', background: '#FFF1F2' },
+        iconTheme: { primary: '#991B1B', secondary: '#FFF1F2' }
+    }
+};
+
 function CreateUser({ isOpen, onClose, onUserCreated }) {
     const [formData, setFormData] = useState({
         rut: '',
@@ -31,7 +46,7 @@ function CreateUser({ isOpen, onClose, onUserCreated }) {
 
         try {
             await userService.createUser(formData);
-            toast.success('¡Usuario registrado con éxito!');
+            toast.success('¡Usuario registrado con éxito!', toastStyles.exito);
 
             setFormData({
                 rut: '', nombre: '', apellido: '', correo: '',
@@ -41,7 +56,7 @@ function CreateUser({ isOpen, onClose, onUserCreated }) {
             if (onUserCreated) onUserCreated();
             onClose();
         } catch (error) {
-            toast.error(error.message || 'Error al registrar al usuario');
+            toast.error(error.message || 'Error al registrar al usuario', toastStyles.error);
         } finally {
             setEnviando(false);
         }
