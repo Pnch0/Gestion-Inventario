@@ -42,7 +42,7 @@ function Navbar(){
                         </NavLink>
                     </li>
 
-                    {(rol === 'administrador' || rol === 'bodega') && (
+                    {(rol === 'administrador' || rol === 'bodega' || rol === 'vendedor') && (
                         <li>
                             <NavLink to="/list-page" className="nav-item">
                                 <CiBoxList className="Icono-Nav"/>

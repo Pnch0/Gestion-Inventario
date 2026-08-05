@@ -26,7 +26,7 @@ function App() {
               <Route path="/users-page" element={<UsersPage />} />
             </Route>
 
-            <Route element={<ProtectedRoute allowedRoles={['administrador', 'bodega']} />}>
+            <Route element={<ProtectedRoute allowedRoles={['administrador', 'bodega', 'vendedor']} />}>
               <Route path="/list-page" element={<ProductsPage />} />
             </Route>
 
