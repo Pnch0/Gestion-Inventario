@@ -3,10 +3,8 @@ import './Navbar.css';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { FaHome, FaShoppingBasket, FaUser} from "react-icons/fa";
 import { CiBoxList } from "react-icons/ci";
-import { IoIosExit  } from "react-icons/io";
+import { IoIosExit } from "react-icons/io";
 import { AuthService } from "../../../Services/api.js";
-
-
 
 function Navbar(){
     const navigate = useNavigate();
@@ -21,15 +19,14 @@ function Navbar(){
             await AuthService.logout();
 
             localStorage.clear();
-            sessionStorage.clear()
+            sessionStorage.clear();
 
             navigate("/", { replace: true });
         
         } catch(error){
-            console.error("Error al cerrar sesión: ", error.message)
+            console.error("Error al cerrar sesión: ", error.message);
         }
     };
-
 
     return(
         <>
@@ -42,7 +39,7 @@ function Navbar(){
                         </NavLink>
                     </li>
 
-                    {(rol === 'administrador' || rol === 'bodega' || rol === 'vendedor') && (
+                    {(rol === 'administrador' || rol === 'bodega') && (
                         <li>
                             <NavLink to="/list-page" className="nav-item">
                                 <CiBoxList className="Icono-Nav"/>
