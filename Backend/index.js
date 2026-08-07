@@ -19,7 +19,7 @@ app.use('/api/roles',routeRole);
 
 app.get('/health', async (req, res) => {
   try {
-    const { error } = await supabase.from('roles').select('id').limit(1);
+    const { error } = await supabase.from('Rol').select('rol_id').limit(1);
     
     if (error) {
       console.error("Error ping Supabase:", error.message);
@@ -27,7 +27,7 @@ app.get('/health', async (req, res) => {
     }
 
     return res.status(200).send("OK");
-  } catch (err) {
+  } catch (error) {
     return res.status(500).send("Error de servidor");
   }
 });
