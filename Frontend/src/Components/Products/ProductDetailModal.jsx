@@ -7,13 +7,11 @@ function ProductDetailModal({ product, onClose }) {
     return (
         <div className="modal-overlay" onClick={onClose}>
             <div className="modal-content modal-detalle" onClick={(e) => e.stopPropagation()}>
-                {/* Botón X posicionado arriba a la derecha */}
                 <button type="button" className="Boton-Cerrar-Modal" onClick={onClose}>
                     <FaTimes />
                 </button>
 
                 <div className="Detalle-Producto-Columna">
-                    {/* 1. Imagen en la parte superior */}
                     <div className="Detalle-Imagen-Superior">
                         {product.imagen_url ? (
                             <img 
@@ -28,13 +26,11 @@ function ProductDetailModal({ product, onClose }) {
                         )}
                     </div>
 
-                    {/* Encabezado principal */}
                     <div className="Detalle-Header">
                         <h2>{product.nombre}</h2>
                         <span className="Badge-Categoria">{product.categoria || 'Sin categoría'}</span>
                     </div>
 
-                    {/* 2. Datos del producto al centro */}
                     <div className="Detalle-Campos-Grid">
                         <div className="Campo-Detalle">
                             <span className="Etiqueta-Campo">Stock Disponible</span>
@@ -58,7 +54,6 @@ function ProductDetailModal({ product, onClose }) {
                         </div>
                     </div>
 
-                    {/* 3. Descripción */}
                     <div className="Detalle-Descripcion-Inferior">
                         <span className="Etiqueta-Campo">Descripción Completa</span>
                         <p>{product.descripcion || 'Este producto no cuenta con una descripción detallada.'}</p>

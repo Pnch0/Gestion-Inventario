@@ -3,7 +3,6 @@ import {supabase, supabaseAdmin} from "../Services/supabase.js";
 export const CreateSale = async (req, res) => {
     const { rut, rut_cliente, rut_vendedor, id_usuario, detalles } = req.body;
 
-    // Tomamos el RUT/ID del vendedor
     const rutFinalVendedor = rut_vendedor || rut || id_usuario;
 
     if (!rutFinalVendedor) {
@@ -17,11 +16,10 @@ export const CreateSale = async (req, res) => {
     try {
         const total_general = detalles.reduce((sum, item) => sum + (item.cantidad_venta * item.precio_unitario), 0);
 
-        // 1. Insertar solo los campos que REALMENTE existen en la tabla Ventas
         const { data: nuevaVenta, error: errorVenta } = await supabase
             .from('Ventas')
             .insert({
-                rut: rutFinalVendedor, // Foreign Key a Usuarios (Vendedor)
+                rut: rutFinalVendedor,
                 fecha_hora: new Date().toISOString(),
                 total_general
             })
@@ -35,7 +33,6 @@ export const CreateSale = async (req, res) => {
 
         const id_venta = nuevaVenta.id_venta;
 
-        // 2. Insertar Detalle_Venta y actualizar Stock
         for (const item of detalles) {
             const total_linea = item.cantidad_venta * item.precio_unitario;
 
@@ -53,7 +50,6 @@ export const CreateSale = async (req, res) => {
                 return res.status(400).json({ error: `Error en detalle del producto ${item.producto_id}: ${errorDetalle.message}` });
             }
 
-            // Actualizar stock
             const { data: producto } = await supabase
                 .from('Productos')
                 .select('stock')
